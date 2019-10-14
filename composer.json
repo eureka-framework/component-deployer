@@ -1,0 +1,24 @@
+{
+  "name": "eureka/component-installer",
+  "description": "PHP Installer & Deployer for projects based on Eureka Framework",
+  "type": "project",
+  "license": "MIT",
+  "prefer-stable": false,
+
+  "authors": [
+    {
+      "name": "Romain Cottard",
+      "role": "Developer"
+    }
+  ],
+
+  "autoload": {
+    "psr-4": {
+      "Eureka\\Component\\Installer\\": "./src"
+    }
+  },
+
+  "require": {
+    "eureka/eurekon": "^3.2"
+  }
+}
