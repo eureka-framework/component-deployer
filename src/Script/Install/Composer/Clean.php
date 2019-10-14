@@ -7,9 +7,9 @@
  * file that was distributed with this source code.
  */
 
-namespace Eureka\Component\Installer\Script\Install\Composer;
+namespace Eureka\Component\Deployer\Script\Install\Composer;
 
-use Eureka\Component\Installer\Common\AbstractInstallerScript;
+use Eureka\Component\Deployer\Common\AbstractCommonScript;
 use Eureka\Eurekon;
 use Eureka\Eurekon\Argument\Argument;
 
@@ -18,7 +18,7 @@ use Eureka\Eurekon\Argument\Argument;
  *
  * @author Romain Cottard
  */
-class Clean extends AbstractInstallerScript
+class Clean extends AbstractCommonScript
 {
     /**
      * ComposerClean constructor.
@@ -34,6 +34,8 @@ class Clean extends AbstractInstallerScript
      */
     public function run(): void
     {
+        $this->chdirSource();
+
         $vendor = $this->rootDir . '/vendor';
 
         if (!is_dir($vendor)) {

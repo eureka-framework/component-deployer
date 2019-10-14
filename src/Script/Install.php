@@ -7,17 +7,16 @@
  * file that was distributed with this source code.
  */
 
-namespace Eureka\Component\Installer\Script;
+namespace Eureka\Component\Deployer\Script;
 
-use Eureka\Component\Installer\Common\AbstractInstallerScript;
-use Eureka\Eurekon;
+use Eureka\Component\Deployer\Common\AbstractCommonScript;
 
 /**
  * Class Install
  *
  * @author Romain Cottard
  */
-class Install extends AbstractInstallerScript
+class Install extends AbstractCommonScript
 {
     /**
      * Install constructor.
@@ -48,6 +47,11 @@ class Install extends AbstractInstallerScript
             $stringStep = str_pad((string) $step, 3, '0', STR_PAD_LEFT);
             $this->runStep($stringStep, $script);
         }
+
+        $this->displayStep('100', 'Ending install');
+        $this->displayInfo('Finishing installation...');
+        $this->displayInfoDone();
+        $this->displaySuccess('Ending install');
     }
 
     /**
@@ -68,7 +72,14 @@ class Install extends AbstractInstallerScript
         $nameArg     = '--app=' . escapeshellarg($this->getAppName());
         $domainArg   = '--domain=' . escapeshellarg($this->getAppDomain());
 
-        passthru("bin/console ${scriptArg} ${stepArg} ${platformArg} ${tagArg} ${nameArg} ${domainArg}", $status);
+        $pathSource = $this->getPathBuilder()->buildPathSource(
+            $this->getAppPlatform(),
+            $this->getAppName(),
+            $this->getAppDomain(),
+            $this->getAppTag(),
+            true
+        );
+        passthru("${pathSource}/bin/console ${scriptArg} ${stepArg} ${platformArg} ${tagArg} ${nameArg} ${domainArg}", $status);
 
         if ($status === 0) {
             $this->displaySuccess($script);

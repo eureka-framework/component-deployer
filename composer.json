@@ -1,5 +1,5 @@
 {
-  "name": "eureka/component-installer",
+  "name": "eureka/component-deployer",
   "description": "PHP Installer & Deployer for projects based on Eureka Framework",
   "type": "project",
   "license": "MIT",
@@ -14,11 +14,11 @@
 
   "autoload": {
     "psr-4": {
-      "Eureka\\Component\\Installer\\": "./src"
+      "Eureka\\Component\\Deployer\\": "./src"
     }
   },
 
   "require": {
-    "eureka/eurekon": "^3.2"
+    "eureka/eurekon": "^3.3"
   }
 }

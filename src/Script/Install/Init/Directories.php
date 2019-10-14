@@ -7,16 +7,16 @@
  * file that was distributed with this source code.
  */
 
-namespace Eureka\Component\Installer\Script\Install\Init;
+namespace Eureka\Component\Deployer\Script\Install\Init;
 
-use Eureka\Component\Installer\Common\AbstractInstallerScript;
+use Eureka\Component\Deployer\Common\AbstractCommonScript;
 
 /**
  * Class Directories
  *
  * @author Romain Cottard
  */
-class Directories extends AbstractInstallerScript
+class Directories extends AbstractCommonScript
 {
     /**
      * Directories constructor.
@@ -32,6 +32,8 @@ class Directories extends AbstractInstallerScript
      */
     public function run(): void
     {
+        $this->chdirSource();
+
         $this->createDirectories();
         $this->fixPermissions();
     }
@@ -45,11 +47,10 @@ class Directories extends AbstractInstallerScript
         foreach ($this->config['install']['init']['directories'] as $directory => $perms) {
             $path = $this->rootDir . DIRECTORY_SEPARATOR . $directory;
 
-            var_export($path);
-            /*if (!is_dir($path) && !mkdir($path, $perms, true)) {
+            if (!is_dir($path) && !mkdir($path, $perms, true)) {
                 $this->displayInfoFailed();
                 $this->throw('Cannot create directory: ' . $directory);
-            }*/
+            }
         }
 
         $this->displayInfoDone();
@@ -65,9 +66,9 @@ class Directories extends AbstractInstallerScript
         foreach ($this->config['install']['init']['directories'] as $directory => $perms) {
             $path = $this->rootDir . DIRECTORY_SEPARATOR . $directory;
 
-            /*if (!chmod($path, 0777)) {
+            if (!chmod($path, $perms)) {
                 $this->throw('Cannot fix permissions on directory: ' . $directory);
-            }*/
+            }
         }
 
         $this->displayInfoDone();

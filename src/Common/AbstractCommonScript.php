@@ -7,20 +7,20 @@
  * file that was distributed with this source code.
  */
 
-namespace Eureka\Component\Installer\Common;
+namespace Eureka\Component\Deployer\Common;
 
-use Eureka\Component\Installer\Enumerator\Platform;
+use Eureka\Component\Deployer\Enumerator\Platform;
 use Eureka\Eurekon;
 use Eureka\Eurekon\IO\Out;
 use Eureka\Eurekon\Style\Color;
 use Eureka\Eurekon\Style\Style;
 
 /**
- * Class AbstractInstallerScript
+ * Class AbstractCommonScript
  *
  * @author Romain Cottard
  */
-abstract class AbstractInstallerScript extends Eurekon\AbstractScript
+abstract class AbstractCommonScript extends Eurekon\AbstractScript
 {
     /** @var string $rootDir */
     protected $rootDir;
@@ -43,14 +43,14 @@ abstract class AbstractInstallerScript extends Eurekon\AbstractScript
     /** @var string|null $appDomain */
     private $appDomain;
 
-    /** @var InstallerPathBuilder $pathBuilder */
+    /** @var PathBuilder $pathBuilder */
     private $pathBuilder;
 
     /**
-     * @param InstallerPathBuilder $pathBuilder
+     * @param PathBuilder $pathBuilder
      * @return $this
      */
-    public function setPathBuilder(InstallerPathBuilder $pathBuilder): self
+    public function setPathBuilder(PathBuilder $pathBuilder): self
     {
         $this->pathBuilder = $pathBuilder;
 
@@ -109,9 +109,9 @@ abstract class AbstractInstallerScript extends Eurekon\AbstractScript
     }
 
     /**
-     * @return InstallerPathBuilder
+     * @return PathBuilder
      */
-    protected function getPathBuilder(): InstallerPathBuilder
+    protected function getPathBuilder(): PathBuilder
     {
         return $this->pathBuilder;
     }
@@ -149,7 +149,7 @@ abstract class AbstractInstallerScript extends Eurekon\AbstractScript
     }
 
     /**
-     * AbstractInstallerScript constructor.
+     * AbstractCommonScript constructor.
      */
     protected function startTimer()
     {
@@ -161,7 +161,7 @@ abstract class AbstractInstallerScript extends Eurekon\AbstractScript
      */
     protected function loadConfiguration(): void
     {
-        $this->config = $this->getContainer()->getParameter('eureka.installer.config');
+        $this->config = $this->getContainer()->getParameter('eureka.deployer.config');
 
         if (!isset($this->config['install'])) {
             throw new \RuntimeException('Invalid installer configuration file');
@@ -286,6 +286,24 @@ abstract class AbstractInstallerScript extends Eurekon\AbstractScript
         Out::std($text, PHP_EOL . PHP_EOL);
 
         throw new \RuntimeException($message, $code);
+    }
+
+    /**
+     * @return void
+     */
+    protected function chdirSource(): void
+    {
+        $pathSource = $this->pathBuilder->buildPathSource(
+            $this->getAppPlatform(),
+            $this->getAppName(),
+            $this->getAppDomain(),
+            $this->getAppTag(),
+            true
+        );
+
+        if (!chdir($pathSource)) {
+            $this->throw('Cannot change directory to "' . $pathSource . '"');
+        }
     }
 
     /**

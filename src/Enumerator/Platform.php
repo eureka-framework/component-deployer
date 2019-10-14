@@ -7,7 +7,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Eureka\Component\Installer\Enumerator;
+namespace Eureka\Component\Deployer\Enumerator;
 
 /**
  * Class Platform

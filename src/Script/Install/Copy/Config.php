@@ -7,9 +7,9 @@
  * file that was distributed with this source code.
  */
 
-namespace Eureka\Component\Installer\Script\Install\Copy;
+namespace Eureka\Component\Deployer\Script\Install\Copy;
 
-use Eureka\Component\Installer\Common\AbstractInstallerScript;
+use Eureka\Component\Deployer\Common\AbstractCommonScript;
 use Eureka\Eurekon;
 use Eureka\Eurekon\Argument\Argument;
 
@@ -18,7 +18,7 @@ use Eureka\Eurekon\Argument\Argument;
  *
  * @author Romain Cottard
  */
-class Config extends AbstractInstallerScript
+class Config extends AbstractCommonScript
 {
     /**
      * Config constructor.
@@ -34,6 +34,8 @@ class Config extends AbstractInstallerScript
      */
     public function run(): void
     {
+        $this->chdirSource();
+
         foreach ($this->config['install']['copy']['files'] as $file => $destination) {
 
             $source = str_replace(['{platform}', '{domain}'], [$this->getAppPlatform(), $this->getAppDomain()], $file);

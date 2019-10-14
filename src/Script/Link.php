@@ -7,17 +7,16 @@
  * file that was distributed with this source code.
  */
 
-namespace Eureka\Component\Installer\Script;
+namespace Eureka\Component\Deployer\Script;
 
-use Eureka\Component\Installer\Common\AbstractInstallerScript;
-use Eureka\Component\Installer\Common\InstallerPathBuilder;
+use Eureka\Component\Deployer\Common\AbstractCommonScript;
 
 /**
  * Class Link
  *
  * @author Romain Cottard
  */
-class Link extends AbstractInstallerScript
+class Link extends AbstractCommonScript
 {
     /**
      * Link constructor.

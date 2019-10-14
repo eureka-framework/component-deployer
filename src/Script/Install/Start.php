@@ -7,9 +7,9 @@
  * file that was distributed with this source code.
  */
 
-namespace Eureka\Component\Installer\Script\Install;
+namespace Eureka\Component\Deployer\Script\Install;
 
-use Eureka\Component\Installer\Common\AbstractInstallerScript;
+use Eureka\Component\Deployer\Common\AbstractCommonScript;
 use Eureka\Eurekon\IO\Out;
 
 /**
@@ -17,7 +17,7 @@ use Eureka\Eurekon\IO\Out;
  *
  * @author Romain Cottard
  */
-class Start extends AbstractInstallerScript
+class Start extends AbstractCommonScript
 {
     /**
      * Start constructor.

@@ -7,16 +7,16 @@
  * file that was distributed with this source code.
  */
 
-namespace Eureka\Component\Installer\Common;
+namespace Eureka\Component\Deployer\Common;
 
-use Eureka\Component\Installer\Enumerator\Platform;
+use Eureka\Component\Deployer\Enumerator\Platform;
 
 /**
- * Class InstallerPathBuilder
+ * Class PathBuilder
  *
  * @author Romain Cottard
  */
-class InstallerPathBuilder
+class PathBuilder
 {
     /** @var string $pathSource */
     private $pathSource = '';
@@ -25,7 +25,7 @@ class InstallerPathBuilder
     private $pathLink = '';
 
     /**
-     * InstallerPathBuilder constructor.
+     * PathBuilder constructor.
      *
      * @param string $pathSource
      * @param string $pathLink

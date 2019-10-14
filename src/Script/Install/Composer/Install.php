@@ -7,10 +7,10 @@
  * file that was distributed with this source code.
  */
 
-namespace Eureka\Component\Installer\Script\Install\Composer;
+namespace Eureka\Component\Deployer\Script\Install\Composer;
 
-use Eureka\Component\Installer\Common\AbstractInstallerScript;
-use Eureka\Component\Installer\Enumerator\Platform;
+use Eureka\Component\Deployer\Common\AbstractCommonScript;
+use Eureka\Component\Deployer\Enumerator\Platform;
 use Eureka\Eurekon;
 use Eureka\Eurekon\Argument\Argument;
 
@@ -19,7 +19,7 @@ use Eureka\Eurekon\Argument\Argument;
  *
  * @author Romain Cottard
  */
-class Install extends AbstractInstallerScript
+class Install extends AbstractCommonScript
 {
     /**
      * Install constructor.
@@ -35,9 +35,11 @@ class Install extends AbstractInstallerScript
      */
     public function run(): void
     {
-        $args = ' --no-interaction';
+        $this->chdirSource();
+
+        $args = ' --no-interaction --no-dev';
         if ($this->getAppPlatform() === Platform::PROD) {
-            $args .= ' --optimize-autoloader --no-dev';
+            $args .= ' --optimize-autoloader';
         }
 
         passthru("composer install ${args}", $status);

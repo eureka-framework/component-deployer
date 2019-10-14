@@ -7,17 +7,16 @@
  * file that was distributed with this source code.
  */
 
-namespace Eureka\Component\Installer\Script;
+namespace Eureka\Component\Deployer\Script;
 
-use Eureka\Component\Installer\Common\AbstractInstallerScript;
-use Eureka\Component\Installer\Common\InstallerPathBuilder;
+use Eureka\Component\Deployer\Common\AbstractCommonScript;
 
 /**
  * Class Deploy
  *
  * @author Romain Cottard
  */
-class Deploy extends AbstractInstallerScript
+class Deploy extends AbstractCommonScript
 {
     /**
      * Deploy constructor.
@@ -53,7 +52,11 @@ class Deploy extends AbstractInstallerScript
      */
     private function exec(string $cmd, string $platformArg, string $tagArg, string $nameArg, string $domainArg): void
     {
-        passthru("bin/console ${cmd} ${platformArg} ${tagArg} ${nameArg} ${domainArg}", $status);
+        if ($cmd !== 'export') {
+            $this->chdirSource();
+        }
+
+        passthru($cmd = "{$this->rootDir}/bin/console ${cmd} ${platformArg} ${tagArg} ${nameArg} ${domainArg}", $status);
 
         if ($status !== 0) {
             throw new \RuntimeException('An error has occurred. Cannot deploy this application!');

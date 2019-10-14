@@ -7,9 +7,9 @@
  * file that was distributed with this source code.
  */
 
-namespace Eureka\Component\Installer\Script\Install\Clean;
+namespace Eureka\Component\Deployer\Script\Install\Clean;
 
-use Eureka\Component\Installer\Common\AbstractInstallerScript;
+use Eureka\Component\Deployer\Common\AbstractCommonScript;
 use Eureka\Eurekon;
 use Eureka\Eurekon\Argument\Argument;
 
@@ -18,7 +18,7 @@ use Eureka\Eurekon\Argument\Argument;
  *
  * @author Romain Cottard
  */
-class Files extends AbstractInstallerScript
+class Files extends AbstractCommonScript
 {
     /**
      * Files constructor.
@@ -44,6 +44,8 @@ class Files extends AbstractInstallerScript
      */
     protected function cleanFiles(array $files): void
     {
+        $this->chdirSource();
+
         foreach ($files as $file) {
             $file = $this->rootDir . DIRECTORY_SEPARATOR . $file;
 

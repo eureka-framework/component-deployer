@@ -7,16 +7,16 @@
  * file that was distributed with this source code.
  */
 
-namespace Eureka\Component\Installer\Script\Install\Yarn;
+namespace Eureka\Component\Deployer\Script\Install\Yarn;
 
-use Eureka\Component\Installer\Common\AbstractInstallerScript;
+use Eureka\Component\Deployer\Common\AbstractCommonScript;
 
 /**
  * Class Install
  *
  * @author Romain Cottard
  */
-class Install extends AbstractInstallerScript
+class Install extends AbstractCommonScript
 {
     /**
      * Install constructor.
@@ -32,6 +32,8 @@ class Install extends AbstractInstallerScript
      */
     public function run(): void
     {
+        $this->chdirSource();
+
         passthru('yarn install', $status);
 
         if ($status !== 0) {

@@ -7,17 +7,16 @@
  * file that was distributed with this source code.
  */
 
-namespace Eureka\Component\Installer\Script;
+namespace Eureka\Component\Deployer\Script;
 
-use Eureka\Component\Installer\Common\AbstractInstallerScript;
-use Eureka\Component\Installer\Common\InstallerPathBuilder;
+use Eureka\Component\Deployer\Common\AbstractCommonScript;
 
 /**
  * Class Export
  *
  * @author Romain Cottard
  */
-class Export extends AbstractInstallerScript
+class Export extends AbstractCommonScript
 {
     /**
      * Export constructor.
@@ -48,6 +47,9 @@ class Export extends AbstractInstallerScript
 
             $this->gitArchive($pathApplication);
             $this->unzip($pathApplication);
+
+            $this->preInstall();
+
         } catch (\RuntimeException $exception) {
             $this->displayError($exception->getMessage());
             return;
@@ -107,6 +109,25 @@ class Export extends AbstractInstallerScript
         if ($status !== 0) {
             $this->displayInfoFailed();
             $this->throw('Cannot remove file archive!');
+        }
+
+        $this->displayInfoDone();
+    }
+
+    /**
+     * @return void
+     */
+    private function preInstall(): void
+    {
+        $this->chdirSource();
+
+        $this->displayInfo(' Pre-install with composer...');
+
+        passthru("composer install --no-interaction", $status);
+
+        if ($status !== 0) {
+            $this->displayInfoFailed();
+            $this->throw('Error with composer installation');
         }
 
         $this->displayInfoDone();

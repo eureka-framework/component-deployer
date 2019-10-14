@@ -7,17 +7,17 @@
  * file that was distributed with this source code.
  */
 
-namespace Eureka\Component\Installer\Script\Install\Yarn;
+namespace Eureka\Component\Deployer\Script\Install\Yarn;
 
-use Eureka\Component\Installer\Common\AbstractInstallerScript;
-use Eureka\Component\Installer\Enumerator\Platform;
+use Eureka\Component\Deployer\Common\AbstractCommonScript;
+use Eureka\Component\Deployer\Enumerator\Platform;
 
 /**
  * Class EncoreBuild
  *
  * @author Romain Cottard
  */
-class EncoreBuild extends AbstractInstallerScript
+class EncoreBuild extends AbstractCommonScript
 {
     /**
      * EncoreBuild constructor.
@@ -33,6 +33,8 @@ class EncoreBuild extends AbstractInstallerScript
      */
     public function run(): void
     {
+        $this->chdirSource();
+
         passthru('yarn encore ' . ($this->getAppPlatform() === Platform::PROD ? 'production' : 'dev'), $status);
 
         if ($status !== 0) {
