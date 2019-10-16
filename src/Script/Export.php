@@ -69,6 +69,8 @@ class Export extends AbstractCommonScript
         $tagArg    = escapeshellarg($this->getAppTag());
 
         $this->displayInfo('Creating git archive...');
+        echo PHP_EOL;
+
         passthru("git archive -o ${fileArg} --prefix=${prefixArg} ${tagArg}", $status);
 
         if ($status !== 0) {
@@ -121,7 +123,7 @@ class Export extends AbstractCommonScript
     {
         $this->chdirSource();
 
-        $this->displayInfo(' Pre-install with composer...');
+        $this->displayHeader(' Pre-install with composer...');
 
         passthru("composer install --no-interaction", $status);
 

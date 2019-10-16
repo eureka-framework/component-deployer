@@ -10,6 +10,7 @@
 namespace Eureka\Component\Deployer\Script;
 
 use Eureka\Component\Deployer\Common\AbstractCommonScript;
+use Eureka\Eurekon\IO\Out;
 
 /**
  * Class Install
@@ -32,6 +33,8 @@ class Install extends AbstractCommonScript
      */
     public function run(): void
     {
+        $this->stepStart();
+
         $stepStart = $this->config['install']['step.start'] ?? 0;
         $stepEnd   = $this->config['install']['step.end'] ?? 100;
 
@@ -48,10 +51,7 @@ class Install extends AbstractCommonScript
             $this->runStep($stringStep, $script);
         }
 
-        $this->displayStep('100', 'Ending install');
-        $this->displayInfo('Finishing installation...');
-        $this->displayInfoDone();
-        $this->displaySuccess('Ending install');
+        $this->stepEnd();
     }
 
     /**
@@ -79,12 +79,37 @@ class Install extends AbstractCommonScript
             $this->getAppTag(),
             true
         );
+
         passthru("${pathSource}/bin/console ${scriptArg} ${stepArg} ${platformArg} ${tagArg} ${nameArg} ${domainArg}", $status);
 
-        if ($status === 0) {
-            $this->displaySuccess($script);
-        } else {
+        if ($status !== 0) {
             $this->displayError($script);
+        } else {
+            $this->displaySuccess($script);
         }
+    }
+
+    /**
+     * @return void
+     */
+    private function stepStart(): void
+    {
+        $this->displayStep('000', 'Starting install');
+
+        Out::std(' Platform:    ' . $this->getAppPlatform());
+        Out::std(' Application: ' . $this->getAppName());
+        Out::std(' Domain:      ' . $this->getAppDomain());
+        Out::std(' Tag:         ' . $this->getAppTag());
+    }
+
+    /**
+     * @return void
+     */
+    private function stepEnd(): void
+    {
+        $this->displayStep('100', 'Ending install');
+        $this->displayInfo('Finishing installation...');
+        $this->displayInfoDone();
+        $this->displaySuccess('Ending install');
     }
 }
