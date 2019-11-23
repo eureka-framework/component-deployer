@@ -25,7 +25,7 @@ class Config extends AbstractCommonScript
      */
     public function __construct()
     {
-        $this->setDescription('Start installation');
+        $this->setDescription('Copying files');
         $this->setExecutable(true);
     }
 
