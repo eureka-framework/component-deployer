@@ -23,7 +23,7 @@ class Directories extends AbstractCommonScript
      */
     public function __construct()
     {
-        $this->setDescription('Initialize var directories');
+        $this->setDescription('Initializing / Fixing directories');
         $this->setExecutable(true);
     }
 
@@ -43,7 +43,7 @@ class Directories extends AbstractCommonScript
      */
     private function createDirectories(): void
     {
-        $this->displayInfo('Fixing directories... ');
+        $this->displayInfo('Create missing directories... ');
         foreach ($this->config['install']['init']['directories'] as $directory => $perms) {
             $path = $this->rootDir . DIRECTORY_SEPARATOR . $directory;
 
@@ -66,9 +66,15 @@ class Directories extends AbstractCommonScript
         foreach ($this->config['install']['init']['directories'] as $directory => $perms) {
             $path = $this->rootDir . DIRECTORY_SEPARATOR . $directory;
 
-            if (!chmod($path, $perms)) {
+            system('chmod -R ' . $perms . ' ' . escapeshellarg($path), $status);
+
+            if ($status !== 0) {
+                $this->displayInfoFailed();
                 $this->throw('Cannot fix permissions on directory: ' . $directory);
             }
+            /*if (!chmod($path, $perms)) {
+                $this->throw('Cannot fix permissions on directory: ' . $directory);
+            }*/
         }
 
         $this->displayInfoDone();
