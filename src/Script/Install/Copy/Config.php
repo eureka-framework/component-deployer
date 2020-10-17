@@ -38,7 +38,6 @@ class Config extends AbstractCommonScript
         $this->chdirSource();
 
         foreach ($this->config['install']['copy']['files'] as $file => $destination) {
-
             $source = str_replace(['{platform}', '{domain}'], [$this->getAppPlatform(), $this->getAppDomain()], $file);
             $this->displayInfo("Copying ${source} to ${destination}");
 

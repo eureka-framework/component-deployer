@@ -54,7 +54,6 @@ class Link extends AbstractCommonScript
             );
             $this->cleanLink($pathLink);
             $this->linkToWebServer($pathSource, $pathLink);
-
         } catch (\RuntimeException $exception) {
             $this->displayError($exception->getMessage());
             return;
