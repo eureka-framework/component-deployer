@@ -1,4 +1,4 @@
-<?php declare(strict_types=1);
+<?php
 
 /*
  * Copyright (c) Romain Cottard
@@ -7,16 +7,17 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace Eureka\Component\Deployer\Script\Install\Copy;
 
 use Eureka\Component\Deployer\Common\AbstractCommonScript;
-use Eureka\Eurekon;
-use Eureka\Eurekon\Argument\Argument;
 
 /**
  * Class Config
  *
  * @author Romain Cottard
+ * @codeCoverageIgnore
  */
 class Config extends AbstractCommonScript
 {

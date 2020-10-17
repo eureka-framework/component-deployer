@@ -1,4 +1,4 @@
-<?php declare(strict_types=1);
+<?php
 
 /*
  * Copyright (c) Romain Cottard
@@ -6,6 +6,8 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
+declare(strict_types=1);
 
 namespace Eureka\Component\Deployer\Script\Install\Init;
 
@@ -15,6 +17,7 @@ use Eureka\Component\Deployer\Common\AbstractCommonScript;
  * Class Directories
  *
  * @author Romain Cottard
+ * @codeCoverageIgnore
  */
 class Directories extends AbstractCommonScript
 {
@@ -72,9 +75,6 @@ class Directories extends AbstractCommonScript
                 $this->displayInfoFailed();
                 $this->throw('Cannot fix permissions on directory: ' . $directory);
             }
-            /*if (!chmod($path, $perms)) {
-                $this->throw('Cannot fix permissions on directory: ' . $directory);
-            }*/
         }
 
         $this->displayInfoDone();

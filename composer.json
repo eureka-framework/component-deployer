@@ -1,9 +1,9 @@
 {
   "name": "eureka/component-deployer",
   "description": "PHP Installer & Deployer for projects based on Eureka Framework",
+  "minimum-stability": "stable",
   "type": "project",
   "license": "MIT",
-  "prefer-stable": false,
 
   "authors": [
     {
@@ -18,7 +18,23 @@
     }
   },
 
+  "autoload-dev": {
+    "psr-4": {
+      "Eureka\\Component\\Deployer\\Tests\\": "./tests"
+    }
+  },
+
   "require": {
-    "eureka/eurekon": "^3.3"
+    "php": ">=7.4.0",
+
+    "eureka/component-console": "@dev"
+  },
+
+  "require-dev": {
+    "dealerdirect/phpcodesniffer-composer-installer": "^v0.6",
+    "phpcompatibility/php-compatibility": "^9.3",
+    "phpunit/phpcov": "^8.2.0",
+    "phpunit/phpunit": "^9.4.0",
+    "squizlabs/php_codesniffer": "^3.5"
   }
 }

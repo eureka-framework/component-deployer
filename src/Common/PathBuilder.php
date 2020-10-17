@@ -1,4 +1,4 @@
-<?php declare(strict_types=1);
+<?php
 
 /*
  * Copyright (c) Romain Cottard
@@ -6,6 +6,8 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
+declare(strict_types=1);
 
 namespace Eureka\Component\Deployer\Common;
 
@@ -19,10 +21,10 @@ use Eureka\Component\Deployer\Enumerator\Platform;
 class PathBuilder
 {
     /** @var string $pathSource */
-    private $pathSource = '';
+    private string $pathSource;
 
     /** @var string $pathLink */
-    private $pathLink = '';
+    private string $pathLink;
 
     /**
      * PathBuilder constructor.
@@ -54,7 +56,20 @@ class PathBuilder
         $suffix = $this->getSuffix($platform, $domain, $tag, $forceAppendTag);
         $prefix = $this->getPrefix($platform);
 
-        return $this->pathSource . DIRECTORY_SEPARATOR . $app . DIRECTORY_SEPARATOR . $prefix . $suffix;
+        return $this->getPathSource() . DIRECTORY_SEPARATOR . $app . DIRECTORY_SEPARATOR . $prefix . $suffix;
+    }
+
+    /**
+     * @param string $platform
+     * @param string $domain
+     * @return string
+     */
+    public function buildPathLink(string $platform, string $domain): string
+    {
+        $suffix = $domain;
+        $prefix = $this->getPrefix($platform);
+
+        return $this->getPathLink() . DIRECTORY_SEPARATOR . $prefix . $suffix;
     }
 
     /**
@@ -71,19 +86,6 @@ class PathBuilder
     public function getPathLink(): string
     {
         return $this->pathLink;
-    }
-
-    /**
-     * @param string $platform
-     * @param string $domain
-     * @return string
-     */
-    public function buildPathLink(string $platform, string $domain): string
-    {
-        $suffix = $domain;
-        $prefix = $this->getPrefix($platform);
-
-        return $this->pathLink . DIRECTORY_SEPARATOR . $prefix . $suffix;
     }
 
     /**

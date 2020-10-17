@@ -1,4 +1,4 @@
-<?php declare(strict_types=1);
+<?php
 
 /*
  * Copyright (c) Romain Cottard
@@ -7,44 +7,49 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace Eureka\Component\Deployer\Common;
 
+use Eureka\Component\Console\Argument\Argument;
+use Eureka\Component\Console\Help;
 use Eureka\Component\Deployer\Enumerator\Platform;
-use Eureka\Eurekon;
-use Eureka\Eurekon\IO\Out;
-use Eureka\Eurekon\Style\Color;
-use Eureka\Eurekon\Style\Style;
+use Eureka\Component\Console\AbstractScript;
+use Eureka\Component\Console\IO\Out;
+use Eureka\Component\Console\Style\Color;
+use Eureka\Component\Console\Style\Style;
 
 /**
  * Class AbstractCommonScript
  *
  * @author Romain Cottard
+ * @codeCoverageIgnore
  */
-abstract class AbstractCommonScript extends Eurekon\AbstractScript
+abstract class AbstractCommonScript extends AbstractScript
 {
     /** @var string $rootDir */
-    protected $rootDir;
+    protected string $rootDir;
 
     /** @var array $config */
-    protected $config;
+    protected array $config;
 
     /** @var int $timer */
-    protected $time;
+    protected int $time;
 
     /** @var string $appPlatform */
-    private $appPlatform;
+    private string $appPlatform;
 
     /** @var string $appTag */
-    private $appTag;
+    private string $appTag;
 
     /** @var string|null $appName */
-    private $appName;
+    private ?string $appName;
 
     /** @var string|null $appDomain */
-    private $appDomain;
+    private ?string $appDomain;
 
     /** @var PathBuilder $pathBuilder */
-    private $pathBuilder;
+    private PathBuilder $pathBuilder;
 
     /**
      * @param PathBuilder $pathBuilder
@@ -64,7 +69,7 @@ abstract class AbstractCommonScript extends Eurekon\AbstractScript
     {
         parent::before();
 
-        $arguments = Eurekon\Argument\Argument::getInstance();
+        $arguments = Argument::getInstance();
 
         //~ Load configuration
         $this->loadConfiguration();
@@ -76,8 +81,8 @@ abstract class AbstractCommonScript extends Eurekon\AbstractScript
         ;
 
         //~ Init installer main vars
-        $this->appPlatform = $arguments->get('platform', 'p', Platform::PROD);
-        $this->appTag      = $arguments->get('tag', 't', $this->config['app.tag'] ?? '1.0.0');
+        $this->appPlatform = (string) $arguments->get('platform', 'p', Platform::PROD);
+        $this->appTag      = (string) $arguments->get('tag', 't', $this->config['app.tag'] ?? '1.0.0');
         $this->appName     = $arguments->get('name', 'n', $this->config['app.name'] ?? null);
         $this->appDomain   = $arguments->get('domain', 'd', $this->config['app.domain'] ?? null);
 
@@ -99,7 +104,7 @@ abstract class AbstractCommonScript extends Eurekon\AbstractScript
      */
     public function help(): void
     {
-        (new Eurekon\Help(static::class))
+        (new Help(static::class))
             ->addArgument('p', 'platform', 'Platform where installation is executed', true, true)
             ->addArgument('t', 'tag', 'Tag version to install', true, true)
             ->addArgument('d', 'domain', 'Application domain (ie: www.my-app.com', true, true)

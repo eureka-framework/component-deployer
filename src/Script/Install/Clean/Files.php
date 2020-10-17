@@ -1,4 +1,4 @@
-<?php declare(strict_types=1);
+<?php
 
 /*
  * Copyright (c) Romain Cottard
@@ -7,16 +7,17 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace Eureka\Component\Deployer\Script\Install\Clean;
 
 use Eureka\Component\Deployer\Common\AbstractCommonScript;
-use Eureka\Eurekon;
-use Eureka\Eurekon\Argument\Argument;
 
 /**
  * Class Files
  *
  * @author Romain Cottard
+ * @codeCoverageIgnore
  */
 class Files extends AbstractCommonScript
 {
@@ -51,10 +52,10 @@ class Files extends AbstractCommonScript
 
             $this->displayInfo('Removing ' . $file . '...');
 
-            /*if (!unlink($file)) {
+            if (!unlink($file)) {
                 $this->displayInfoFailed();
-                $this->throw('Cannot remove file "' . $file . '"!');
-            }*/
+                //$this->throw('Cannot remove file "' . $file . '"!');
+            }
             $this->displayInfoDone();
         }
     }
@@ -71,11 +72,11 @@ class Files extends AbstractCommonScript
 
             $this->displayInfo('Removing ' . $dir . '...');
 
-            //passthru('rm -r ' . escapeshellarg($dir), $status);
+            passthru('rm -r ' . escapeshellarg($dir), $status);
 
             if ($status !== 0) {
                 $this->displayInfoFailed();
-                $this->throw('Cannot remove directory "' . $dir . '"!');
+                //$this->throw('Cannot remove directory "' . $dir . '"!');
             }
 
             $this->displayInfoDone();

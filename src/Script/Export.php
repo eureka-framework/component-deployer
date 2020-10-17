@@ -1,4 +1,4 @@
-<?php declare(strict_types=1);
+<?php
 
 /*
  * Copyright (c) Romain Cottard
@@ -6,6 +6,8 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
+declare(strict_types=1);
 
 namespace Eureka\Component\Deployer\Script;
 
@@ -15,6 +17,7 @@ use Eureka\Component\Deployer\Common\AbstractCommonScript;
  * Class Export
  *
  * @author Romain Cottard
+ * @codeCoverageIgnore
  */
 class Export extends AbstractCommonScript
 {
@@ -93,13 +96,13 @@ class Export extends AbstractCommonScript
         $currentLocation = getcwd();
         chdir($pathSource);
 
-        $this->displayInfo(' Uncompressing archive file...');
+        $this->displayInfo(' Decompressing archive file...');
         exec("unzip ${fileArchiveArg}", $output, $status);
 
         if ($status !== 0) {
             chdir($currentLocation);
             $this->displayInfoFailed();
-            $this->throw('Cannot uncompress archive file!');
+            $this->throw('Cannot decompress archive file!');
         }
 
         chdir($currentLocation);
