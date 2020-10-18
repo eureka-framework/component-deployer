@@ -105,10 +105,10 @@ abstract class AbstractCommonScript extends AbstractScript
     public function help(): void
     {
         (new Help(static::class))
-            ->addArgument('p', 'platform', 'Platform where installation is executed', true, true)
-            ->addArgument('t', 'tag', 'Tag version to install', true, true)
-            ->addArgument('d', 'domain', 'Application domain (ie: www.my-app.com', true, true)
-            ->addArgument('app', 'app', 'Application name, used to retrieve config', true, true)
+            ->addArgument('p', 'platform', 'Platform where installation is executed (default from config)', true, false)
+            ->addArgument('t', 'tag', 'Tag version to install (default from config)', true, false)
+            ->addArgument('d', 'domain', 'Application domain (ie: www.my-app.com) (default from config)', true, false)
+            ->addArgument('n', 'name', 'Application name, used to retrieve config (default from config)', true, false)
             ->display()
         ;
     }
