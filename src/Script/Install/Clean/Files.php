@@ -52,9 +52,9 @@ class Files extends AbstractCommonScript
 
             $this->displayInfo('Removing ' . $file . '...');
 
-//            if (!unlink($file)) {
-//                $this->displayInfoFailed();
-//            }
+            if (!unlink($file)) {
+                $this->displayInfoFailed();
+            }
             $this->displayInfoDone();
         }
     }
@@ -71,7 +71,7 @@ class Files extends AbstractCommonScript
 
             $this->displayInfo('Removing ' . $dir . '...');
 
-            //passthru('rm -r ' . escapeshellarg($dir), $status);
+            passthru('rm -r ' . escapeshellarg($dir), $status);
 
             if ($status !== 0) {
                 $this->displayInfoFailed();

@@ -83,7 +83,7 @@ class Export extends AbstractCommonScript
      */
     private function unzip(string $pathApplication): void
     {
-        $pathSource     = dirname($pathApplication) ;
+        $pathSource     = dirname($pathApplication);
         $fileArchiveArg = escapeshellarg($pathApplication . '.zip');
 
         $currentLocation = getcwd();
