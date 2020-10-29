@@ -15,19 +15,19 @@ use Eureka\Component\Deployer\Common\AbstractCommonScript;
 use Eureka\Component\Deployer\Enumerator\Platform;
 
 /**
- * Class Install
+ * Class Reinstall
  *
  * @author Romain Cottard
  * @codeCoverageIgnore
  */
-class Install extends AbstractCommonScript
+class Reinstall extends AbstractCommonScript
 {
     /**
-     * Install constructor.
+     * ComposerClean constructor.
      */
     public function __construct()
     {
-        $this->setDescription('Composer install dependencies');
+        $this->setDescription('Composer clean reinstall (no dev)');
         $this->setExecutable(true);
     }
 
@@ -38,6 +38,37 @@ class Install extends AbstractCommonScript
     {
         $this->chdirSource();
 
+        $this->clean();
+        $this->install();
+    }
+
+    /**
+     * @return void
+     */
+    private function clean(): void
+    {
+        $vendor = $this->rootDir . '/vendor';
+
+        if (!is_dir($vendor)) {
+            return;
+        }
+
+        $this->displayInfo('Removing "vendor/" directory...');
+
+        passthru('rm -rf ' . $vendor, $status);
+
+        if ($status !== 0) {
+            $this->displayInfoFailed();
+            $this->throw('Could not clean "vendor/" directory');
+        }
+
+        $this->displayInfoDone();
+    }
+
+    public function install(): void
+    {
+        $this->displayInfo('Removing "vendor/" directory...');
+
         $args = ' --no-interaction --no-dev';
         if ($this->getAppPlatform() === Platform::PROD) {
             $args .= ' --optimize-autoloader';
@@ -46,7 +77,10 @@ class Install extends AbstractCommonScript
         passthru("composer install ${args}", $status);
 
         if ($status !== 0) {
+            $this->displayInfoFailed();
             $this->throw('Error with composer installation');
         }
+
+        $this->displayInfoDone();
     }
 }
