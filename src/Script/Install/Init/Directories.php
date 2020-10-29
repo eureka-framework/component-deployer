@@ -50,7 +50,7 @@ class Directories extends AbstractCommonScript
         foreach ($this->config['install']['init']['directories'] as $directory => $perms) {
             $path = $this->rootDir . DIRECTORY_SEPARATOR . $directory;
 
-            if (!is_dir($path) && !mkdir($path, $perms, true)) {
+            if (!is_dir($path) && !mkdir($path, 0755, true)) {
                 $this->displayInfoFailed();
                 $this->throw('Cannot create directory: ' . $directory);
             }
@@ -69,7 +69,7 @@ class Directories extends AbstractCommonScript
         foreach ($this->config['install']['init']['directories'] as $directory => $perms) {
             $path = $this->rootDir . DIRECTORY_SEPARATOR . $directory;
 
-            system('chmod -R ' . $perms . ' ' . escapeshellarg($path), $status);
+            system('chmod -R 0' . $perms . ' ' . escapeshellarg($path), $status);
 
             if ($status !== 0) {
                 $this->displayInfoFailed();
