@@ -33,8 +33,8 @@ abstract class AbstractCommonScript extends AbstractScript
     /** @var array $config */
     protected array $config;
 
-    /** @var int $timer */
-    protected int $time;
+    /** @var float $timer */
+    protected float $time;
 
     /** @var string $appPlatform */
     private string $appPlatform;
