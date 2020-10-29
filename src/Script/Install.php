@@ -75,13 +75,7 @@ class Install extends AbstractCommonScript
         $nameArg     = '--app=' . escapeshellarg($this->getAppName());
         $domainArg   = '--domain=' . escapeshellarg($this->getAppDomain());
 
-        $pathSource = $this->getPathBuilder()->buildPathSource(
-            $this->getAppPlatform(),
-            $this->getAppName(),
-            $this->getAppDomain(),
-            $this->getAppTag(),
-            true
-        );
+        $pathSource = $this->getRootDirSource();
 
         passthru("${pathSource}/bin/console ${scriptArg} ${stepArg} ${platformArg} ${tagArg} ${nameArg} ${domainArg}", $status);
 

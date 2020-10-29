@@ -55,11 +55,9 @@ class Deploy extends AbstractCommonScript
      */
     private function exec(string $cmd, string $platformArg, string $tagArg, string $nameArg, string $domainArg): void
     {
-        if ($cmd !== 'export') {
-            $this->chdirSource();
-        }
+        $rootDir = $cmd !== 'export' ? $this->getRootDirSource() : $this->rootDir;
 
-        passthru("{$this->rootDir}/bin/console ${cmd} ${platformArg} ${tagArg} ${nameArg} ${domainArg}", $status);
+        passthru("${rootDir}/bin/console ${cmd} ${platformArg} ${tagArg} ${nameArg} ${domainArg}", $status);
 
         if ($status !== 0) {
             throw new \RuntimeException('An error has occurred. Cannot deploy this application!');

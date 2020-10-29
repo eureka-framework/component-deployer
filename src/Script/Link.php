@@ -40,15 +40,8 @@ class Link extends AbstractCommonScript
         $this->displayStep('   ', 'Link project source to www apache domain directory');
 
         try {
-            $pathSource = $this->getPathBuilder()->buildPathSource(
-                $this->getAppPlatform(),
-                $this->getAppName(),
-                $this->getAppDomain(),
-                $this->getAppTag(),
-                true
-            );
-
-            $pathLink = $this->getPathBuilder()->buildPathLink(
+            $pathSource = $this->getRootDirSource();
+            $pathLink   = $this->getPathBuilder()->buildPathLink(
                 $this->getAppPlatform(),
                 $this->getAppDomain()
             );

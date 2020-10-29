@@ -298,17 +298,26 @@ abstract class AbstractCommonScript extends AbstractScript
      */
     protected function chdirSource(): void
     {
-        $pathSource = $this->pathBuilder->buildPathSource(
-            $this->getAppPlatform(),
-            $this->getAppName(),
-            $this->getAppDomain(),
-            $this->getAppTag(),
-            true
-        );
+        $pathSource = $this->getRootDirSource();
 
         if (!chdir($pathSource)) {
             $this->throw('Cannot change directory to "' . $pathSource . '"');
         }
+    }
+
+    /**
+     * @param bool $forceAppendTag
+     * @return string
+     */
+    protected function getRootDirSource(bool $forceAppendTag = false): string
+    {
+        return $this->pathBuilder->buildPathSource(
+            $this->getAppPlatform(),
+            $this->getAppName(),
+            $this->getAppDomain(),
+            $this->getAppTag(),
+            $forceAppendTag
+        );
     }
 
     /**

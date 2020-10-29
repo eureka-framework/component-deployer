@@ -40,13 +40,7 @@ class Export extends AbstractCommonScript
         $this->displayStep('   ', 'Export project source');
 
         try {
-            $pathApplication = $this->getPathBuilder()->buildPathSource(
-                $this->getAppPlatform(),
-                $this->getAppName(),
-                $this->getAppDomain(),
-                $this->getAppTag(),
-                true
-            );
+            $pathApplication = $this->getRootDirSource();
 
             $this->gitArchive($pathApplication);
             $this->unzip($pathApplication);
