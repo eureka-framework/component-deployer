@@ -309,7 +309,7 @@ abstract class AbstractCommonScript extends AbstractScript
      * @param bool $forceAppendTag
      * @return string
      */
-    protected function getRootDirSource(bool $forceAppendTag = false): string
+    protected function getRootDirSource(bool $forceAppendTag = true): string
     {
         return $this->pathBuilder->buildPathSource(
             $this->getAppPlatform(),
