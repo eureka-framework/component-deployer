@@ -27,7 +27,7 @@
   "require": {
     "php": ">=7.4.0",
 
-    "eureka/component-console": "@dev"
+    "eureka/component-console": "^5.0"
   },
 
   "require-dev": {
