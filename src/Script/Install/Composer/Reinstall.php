@@ -67,7 +67,7 @@ class Reinstall extends AbstractCommonScript
 
     public function install(): void
     {
-        $this->displayInfo('Removing "vendor/" directory...');
+        $this->displayInfo('Installing composer without dev dependencies...');
 
         $args = ' --no-interaction --no-dev';
         if ($this->getAppPlatform() === Platform::PROD) {
