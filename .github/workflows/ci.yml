@@ -27,7 +27,8 @@ jobs:
             ${{ runner.os }}-php-
 
       - name: Install dependencies
-        run: make update
+        if: steps.composer-cache.outputs.cache-hit != 'true'
+        run: make install
 
       - name: Tests Statics (Code Style check)
         run: make phpcs
