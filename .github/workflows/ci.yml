@@ -26,8 +26,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-php-
 
-      - name: Install dependencies
-        if: steps.composer-cache.outputs.cache-hit != 'true'
+      - name: Install dependenciesi
         run: make install
 
       - name: Tests Statics (Code Style check)
