@@ -26,8 +26,8 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-php-
 
-      - name: Install dependenciesi
-        run: make install
+      - name: Install dependencies
+        run: make update
 
       - name: Tests Statics (Code Style check)
         run: make phpcs
