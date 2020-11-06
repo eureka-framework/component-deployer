@@ -28,23 +28,27 @@ parameters:
 
             step.list:
                 #~ 0: Start Install (defined in main install script)
+                #~ 1 to 9: reserved for deployed itself
+                #~ 001: Copy secrets files
 
                 #~ Setup some directories
                 10: 'Install/Init/Directories'
 
                 #~ Copy configs files
-                20: 'Install/Copy/Config'
+                #20: 'Install/Copy/Config'
 
                 #~ Yarn / npm
                 40: 'Install/Yarn/Install'
                 41: 'Install/Yarn/EncoreBuild'
 
                 #~ Cleaning installation files
-                #80: 'Install/Clean/Files'
+                70: 'Install/Clean/Files'
 
                 #~ Composer cleaning & install no-dev
-                #90: 'Install/Composer/Clean'
-                91: 'Install/Composer/Install'
+                80: 'Install/Composer/Reinstall'
+                89: 'Install/Clean/Cache'
+
+                #~ 90 to 99: reserved for deployed itself
 
                 #~ 100: Ending installation (defined in main install script)
 
