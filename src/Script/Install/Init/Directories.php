@@ -46,9 +46,11 @@ class Directories extends AbstractCommonScript
      */
     private function createDirectories(): void
     {
+        $rootDir = $this->getRootDirSource();
+
         $this->displayInfo('Create missing directories... ');
         foreach ($this->config['install']['init']['directories'] as $directory => $perms) {
-            $path = $this->rootDir . DIRECTORY_SEPARATOR . $directory;
+            $path = $rootDir . DIRECTORY_SEPARATOR . $directory;
 
             if (!is_dir($path) && !mkdir($path, 0755, true)) {
                 $this->displayInfoFailed();
@@ -64,10 +66,12 @@ class Directories extends AbstractCommonScript
      */
     private function fixPermissions(): void
     {
+        $rootDir = $this->getRootDirSource();
+
         $this->displayInfo('Fixing permissions... ');
 
         foreach ($this->config['install']['init']['directories'] as $directory => $perms) {
-            $path = $this->rootDir . DIRECTORY_SEPARATOR . $directory;
+            $path = $rootDir . DIRECTORY_SEPARATOR . $directory;
 
             system('chmod -R 0' . $perms . ' ' . escapeshellarg($path), $status);
 

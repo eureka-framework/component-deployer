@@ -47,8 +47,10 @@ class Files extends AbstractCommonScript
     {
         $this->chdirSource();
 
+        $rootDir = $this->getRootDirSource();
+
         foreach ($files as $file) {
-            $file = $this->rootDir . DIRECTORY_SEPARATOR . $file;
+            $file = $rootDir . DIRECTORY_SEPARATOR . $file;
 
             $this->displayInfo('Removing ' . $file . '...');
 
@@ -65,9 +67,11 @@ class Files extends AbstractCommonScript
      */
     protected function cleanDirectories(array $directories): void
     {
+        $rootDir = $this->getRootDirSource();
+
         $status = 0;
         foreach ($directories as $dir) {
-            $dir = $this->rootDir . DIRECTORY_SEPARATOR . $dir;
+            $dir = $rootDir . DIRECTORY_SEPARATOR . $dir;
 
             $this->displayInfo('Removing ' . $dir . '...');
 

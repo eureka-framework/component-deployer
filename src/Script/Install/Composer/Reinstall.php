@@ -47,7 +47,7 @@ class Reinstall extends AbstractCommonScript
      */
     private function clean(): void
     {
-        $vendor = $this->rootDir . '/vendor';
+        $vendor = $this->getRootDirSource() . '/vendor';
 
         if (!is_dir($vendor)) {
             return;

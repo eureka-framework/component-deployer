@@ -44,9 +44,11 @@ class Cache extends AbstractCommonScript
      */
     protected function cleanDirectories(array $directories): void
     {
-        $status = 0;
+        $status  = 0;
+        $rootDir = $this->getRootDirSource();
+
         foreach ($directories as $dir) {
-            $dir = $this->rootDir . DIRECTORY_SEPARATOR . $dir;
+            $dir = $rootDir . DIRECTORY_SEPARATOR . $dir;
 
             $this->displayInfo('Removing ' . $dir . '...');
 

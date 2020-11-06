@@ -38,7 +38,9 @@ class Install extends AbstractCommonScript
     {
         //~ Step 0 - 9: Reserved by deployer
         $this->stepStart();
-        $this->step001();
+
+        $this->step001(); // Composer install
+        $this->step002(); // Copy secrets
 
         //~ Start app step
         $stepStart = (int) ($this->config['install']['step.start'] ?? 10);
@@ -110,7 +112,15 @@ class Install extends AbstractCommonScript
      */
     private function step001(): void
     {
-        $this->runStep('001', 'Install/Copy/Config', $this->rootDir);
+        $this->runStep('001', 'Install/Composer/Reinstall', $this->rootDir);
+    }
+
+    /**
+     * @return void
+     */
+    private function step002(): void
+    {
+        $this->runStep('002', 'Install/Copy/Config', $this->rootDir);
     }
 
     /**

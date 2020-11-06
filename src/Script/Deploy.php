@@ -57,8 +57,7 @@ class Deploy extends AbstractCommonScript
     {
         $rootDir = $cmd !== 'export' ? $this->getRootDirSource() : $this->rootDir;
 
-        passthru($cmdString = "${rootDir}/bin/console ${cmd} ${platformArg} ${tagArg} ${nameArg} ${domainArg}", $status);
-        echo $cmdString . PHP_EOL;
+        passthru("${rootDir}/bin/console ${cmd} ${platformArg} ${tagArg} ${nameArg} ${domainArg}", $status);
 
         if ($status !== 0) {
             throw new \RuntimeException('An error has occurred. Cannot deploy this application!');

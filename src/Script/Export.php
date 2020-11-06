@@ -44,8 +44,6 @@ class Export extends AbstractCommonScript
 
             $this->gitArchive($pathApplication);
             $this->unzip($pathApplication);
-
-            $this->preInstall();
         } catch (\RuntimeException $exception) {
             $this->displayError($exception->getMessage());
             return;
