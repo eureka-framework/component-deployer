@@ -56,7 +56,7 @@ class Install extends AbstractCommonScript
             }
 
             $stringStep = str_pad((string) $step, 3, '0', STR_PAD_LEFT);
-            $this->runStep($pathSource, $stringStep, $script);
+            $this->runStep($stringStep, $script, $pathSource);
         }
 
         //~ Step 90 - 100: Reserved by deployer
