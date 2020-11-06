@@ -24,6 +24,10 @@
     }
   },
 
+  "config": {
+    "discard-changes": true
+  },
+
   "require": {
     "php": ">=7.4.0",
 
