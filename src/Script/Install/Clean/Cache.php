@@ -19,14 +19,14 @@ use Eureka\Component\Deployer\Common\AbstractCommonScript;
  * @author Romain Cottard
  * @codeCoverageIgnore
  */
-class Files extends AbstractCommonScript
+class Cache extends AbstractCommonScript
 {
     /**
      * Files constructor.
      */
     public function __construct()
     {
-        $this->setDescription('Cleaning files & directories');
+        $this->setDescription('Cleaning cache app directory');
         $this->setExecutable(true);
     }
 
@@ -35,28 +35,7 @@ class Files extends AbstractCommonScript
      */
     public function run(): void
     {
-        $this->cleanFiles($this->config['install']['clean']['files']);
-        $this->cleanDirectories($this->config['install']['clean']['directories']);
-    }
-
-    /**
-     * @param array $files
-     * @return void
-     */
-    protected function cleanFiles(array $files): void
-    {
-        $this->chdirSource();
-
-        foreach ($files as $file) {
-            $file = $this->rootDir . DIRECTORY_SEPARATOR . $file;
-
-            $this->displayInfo('Removing ' . $file . '...');
-
-            if (is_file($file) && !unlink($file)) {
-                $this->displayInfoFailed();
-            }
-            $this->displayInfoDone();
-        }
+        $this->cleanDirectories(['var/cache/', 'var/log/']);
     }
 
     /**

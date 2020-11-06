@@ -36,35 +36,43 @@ class Install extends AbstractCommonScript
      */
     public function run(): void
     {
+        //~ Step 0 - 9: Reserved by deployer
         $this->stepStart();
+        $this->step001();
 
-        $stepStart = $this->config['install']['step.start'] ?? 0;
-        $stepEnd   = $this->config['install']['step.end'] ?? 100;
+        //~ Start app step
+        $stepStart = (int) ($this->config['install']['step.start'] ?? 10);
+        $stepEnd   = (int) ($this->config['install']['step.end'] ?? 100);
+
+        $pathSource = $this->getRootDirSource();
 
         foreach ($this->config['install']['step.list'] as $step => $script) {
-            if ($step < $stepStart) {
+            if ((int) $step < $stepStart) {
                 continue;
             }
 
-            if ($step > $stepEnd) {
+            if ((int) $step > $stepEnd) {
                 break;
             }
 
             $stringStep = str_pad((string) $step, 3, '0', STR_PAD_LEFT);
-            $this->runStep($stringStep, $script);
+            $this->runStep($pathSource, $stringStep, $script);
         }
 
+        //~ Step 90 - 100: Reserved by deployer
         $this->stepEnd();
     }
 
     /**
      * @param string $step
      * @param string $script
+     * @param string $pathSource
      * @return void
      */
     private function runStep(
         string $step,
-        string $script
+        string $script,
+        string $pathSource
     ): void {
         $this->startTimer();
 
@@ -74,8 +82,6 @@ class Install extends AbstractCommonScript
         $tagArg      = '--tag=' . escapeshellarg($this->getAppTag());
         $nameArg     = '--app=' . escapeshellarg($this->getAppName());
         $domainArg   = '--domain=' . escapeshellarg($this->getAppDomain());
-
-        $pathSource = $this->getRootDirSource();
 
         passthru("${pathSource}/bin/console ${scriptArg} ${stepArg} ${platformArg} ${tagArg} ${nameArg} ${domainArg}", $status);
 
@@ -97,6 +103,14 @@ class Install extends AbstractCommonScript
         Out::std(' Application: ' . $this->getAppName());
         Out::std(' Domain:      ' . $this->getAppDomain());
         Out::std(' Tag:         ' . $this->getAppTag());
+    }
+
+    /**
+     * @return void
+     */
+    private function step001(): void
+    {
+        $this->runStep('001', 'Install/Copy/Config', $this->rootDir);
     }
 
     /**
