@@ -5,6 +5,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 
+## [1.1.0] - 2020-11-06
+### Changed
+ * Minor changes in deployment scripts
+ * Some step now reserved for Deployer itself
+
 ## [1.0.0] - 2020-10-30
 ### Changed
  * New require PHP 7.4+
