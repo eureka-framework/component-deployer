@@ -55,7 +55,7 @@ class Deploy extends AbstractCommonScript
      */
     private function exec(string $cmd, string $platformArg, string $tagArg, string $nameArg, string $domainArg): void
     {
-        $rootDir = $cmd !== 'export' ? $this->getRootDirSource() : $this->rootDir;
+        $rootDir = ($cmd !== 'export' && $cmd !== 'install') ? $this->getRootDirSource() : $this->rootDir;
 
         passthru("${rootDir}/bin/console ${cmd} ${platformArg} ${tagArg} ${nameArg} ${domainArg}", $status);
 
