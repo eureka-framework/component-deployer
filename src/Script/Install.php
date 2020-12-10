@@ -62,6 +62,8 @@ class Install extends AbstractCommonScript
         }
 
         //~ Step 90 - 100: Reserved by deployer
+        $this->step098(); // Clear symfony cache
+        $this->step099(); // Init directories & fix perms
         $this->stepEnd();
     }
 
@@ -121,6 +123,22 @@ class Install extends AbstractCommonScript
     private function step002(): void
     {
         $this->runStep('002', 'Install/Copy/Config', $this->rootDir);
+    }
+
+    /**
+     * @return void
+     */
+    private function step098(): void
+    {
+        $this->runStep('098', 'Install/Clean/Cache', $this->rootDir);
+    }
+
+    /**
+     * @return void
+     */
+    private function step099(): void
+    {
+        $this->runStep('099', 'Install/Init/Directories', $this->rootDir);
     }
 
     /**

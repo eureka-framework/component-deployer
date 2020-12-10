@@ -5,8 +5,14 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 
-## [1.2.0] - Unreleased 
-### Add
+## [1.3.0] - 2020-12-10
+### Added
+ * Step 099 to clear app cache
+### Changed
+ * All main script are now executed from dev source, not anymore from installed source
+
+## [1.2.0] - 2020-11-17
+### Added
  * Script to initialize some symlinks
 
 ## [1.1.0] - 2020-11-06

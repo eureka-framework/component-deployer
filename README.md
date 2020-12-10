@@ -29,13 +29,12 @@ parameters:
             step.list:
                 #~ 0: Start Install (defined in main install script)
                 #~ 1 to 9: reserved for deployed itself
-                #~ 001: Copy secrets files
+                #~ 001: Install composer
+                #~ 002: Copy secrets files
 
                 #~ Setup some directories
                 10: 'Install/Init/Directories'
-
-                #~ Copy configs files
-                #20: 'Install/Copy/Config'
+                11: 'Install/Init/Symlink'
 
                 #~ Yarn / npm
                 40: 'Install/Yarn/Install'
@@ -44,24 +43,25 @@ parameters:
                 #~ Cleaning installation files
                 70: 'Install/Clean/Files'
 
-                #~ Composer cleaning & install no-dev
-                80: 'Install/Composer/Reinstall'
-                89: 'Install/Clean/Cache'
 
                 #~ 90 to 99: reserved for deployed itself
-
+                #~ 098: Clean cache
+                #~ 099: Init directory & perms again for production
                 #~ 100: Ending installation (defined in main install script)
 
             init:
                 directories:
-                    'var/log':   0777
-                    'var/cache': 0777
-                    'var/test':  0777
+                    'var/log':   777
+                    'var/cache': 777
+                    'var/test':  777
+
+                symlinks:
+                    '/var/upload/%app.name%/': 'web/upload'
 
             copy:
                 files:
                     # src: dest
-                    '/data/conf/{platform}/{domain}/app_secret.yaml': 'config/packages/app_secret.yaml'
+                    '/var/conf/{platform}/{domain}/database.yaml': 'config/secrets/database.yaml'
 
             clean:
                 files:
@@ -75,6 +75,7 @@ parameters:
                 directories:
                     - 'assets/'
                     - 'node_modules/'
+                    - 'sql/'
 
 services:
     # default configuration for services in *this* file
