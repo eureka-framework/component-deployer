@@ -27,7 +27,7 @@ class Config extends AbstractCommonScript
     public function __construct()
     {
         $this->setDescription('Copying files');
-        $this->setExecutable(true);
+        $this->setExecutable();
     }
 
     /**
@@ -39,11 +39,11 @@ class Config extends AbstractCommonScript
 
         foreach ($this->config['install']['copy']['files'] as $file => $destination) {
             $source = str_replace(['{platform}', '{domain}'], [$this->getAppPlatform(), $this->getAppDomain()], $file);
-            $this->displayInfo("Copying ${source} to ${destination}");
+            $this->displayInfo("Copying $source to $destination");
 
             if (!copy($source, $destination)) {
                 $this->displayInfoFailed();
-                $this->throw("Could not copy ${source} to ${destination}");
+                $this->throw("Could not copy $source to $destination");
             }
 
             $this->displayInfoDone();

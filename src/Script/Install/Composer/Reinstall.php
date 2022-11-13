@@ -28,7 +28,7 @@ class Reinstall extends AbstractCommonScript
     public function __construct()
     {
         $this->setDescription('Composer clean reinstall (no dev)');
-        $this->setExecutable(true);
+        $this->setExecutable();
     }
 
     /**
@@ -74,7 +74,7 @@ class Reinstall extends AbstractCommonScript
             $args .= ' --optimize-autoloader';
         }
 
-        passthru("composer install ${args}", $status);
+        passthru("composer install $args", $status);
 
         if ($status !== 0) {
             $this->displayInfoFailed();

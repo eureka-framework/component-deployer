@@ -27,34 +27,39 @@ use Eureka\Component\Console\Style\Style;
  */
 abstract class AbstractCommonScript extends AbstractScript
 {
-    /** @var string $rootDir */
-    protected string $rootDir;
-
     /** @var array $config */
     protected array $config;
 
-    /** @var float $timer */
+    protected string $rootDir;
     protected float $time;
-
-    /** @var string $appPlatform */
     private string $appPlatform;
-
-    /** @var string $appTag */
     private string $appTag;
-
-    /** @var string|null $appName */
-    private ?string $appName;
-
-    /** @var string|null $appDomain */
-    private ?string $appDomain;
-
-    /** @var PathBuilder $pathBuilder */
+    private string $appName;
+    private string $appDomain;
     private PathBuilder $pathBuilder;
 
+    public function setRootDir(string $rootDir): self
+    {
+        $this->rootDir = $rootDir;
+
+        return $this;
+    }
+
     /**
-     * @param PathBuilder $pathBuilder
+     * @param array $config
      * @return $this
      */
+    public function setConfig(array $config): self
+    {
+        $this->config = $config;
+
+        if (!isset($this->config['install'])) {
+            throw new \RuntimeException('Invalid installer configuration file');
+        }
+
+        return $this;
+    }
+
     public function setPathBuilder(PathBuilder $pathBuilder): self
     {
         $this->pathBuilder = $pathBuilder;
@@ -62,17 +67,11 @@ abstract class AbstractCommonScript extends AbstractScript
         return $this;
     }
 
-    /**
-     * @return void
-     */
     public function before(): void
     {
         parent::before();
 
         $arguments = Argument::getInstance();
-
-        //~ Load configuration
-        $this->loadConfiguration();
 
         //~ Add color & hide base header/footer script display
         $arguments
@@ -83,18 +82,16 @@ abstract class AbstractCommonScript extends AbstractScript
         //~ Init installer main vars
         $this->appPlatform = (string) $arguments->get('platform', 'p', Platform::PROD);
         $this->appTag      = (string) $arguments->get('tag', 't', $this->config['app.tag'] ?? '1.0.0');
-        $this->appName     = $arguments->get('name', 'n', $this->config['app.name'] ?? null);
-        $this->appDomain   = $arguments->get('domain', 'd', $this->config['app.domain'] ?? null);
+        $this->appName     = (string) $arguments->get('name', 'n', $this->config['app.name'] ?? '');
+        $this->appDomain   = (string) $arguments->get('domain', 'd', $this->config['app.domain'] ?? '');
 
         //~ Display Step title
         if ($arguments->has('step')) {
             $this->displayStep(
-                $arguments->get('step'),
+                (string) $arguments->get('step'),
                 $this->getDescription()
             );
         }
-
-        $this->rootDir = $this->getContainer()->getParameter('kernel.directory.root');
     }
 
     /**
@@ -105,141 +102,84 @@ abstract class AbstractCommonScript extends AbstractScript
     public function help(): void
     {
         (new Help(static::class))
-            ->addArgument('p', 'platform', 'Platform where installation is executed (default from config)', true, false)
-            ->addArgument('t', 'tag', 'Tag version to install (default from config)', true, false)
-            ->addArgument('d', 'domain', 'Application domain (ie: www.my-app.com) (default from config)', true, false)
-            ->addArgument('n', 'name', 'Application name, used to retrieve config (default from config)', true, false)
+            ->addArgument('p', 'platform', 'Platform where installation is executed (default from config)', true)
+            ->addArgument('t', 'tag', 'Tag version to install (default from config)', true)
+            ->addArgument('d', 'domain', 'Application domain (ie: www.my-app.com) (default from config)', true)
+            ->addArgument('n', 'name', 'Application name, used to retrieve config (default from config)', true)
             ->display()
         ;
     }
 
-    /**
-     * @return PathBuilder
-     */
     protected function getPathBuilder(): PathBuilder
     {
         return $this->pathBuilder;
     }
 
-    /**
-     * @return string
-     */
     protected function getAppDomain(): string
     {
         return $this->appDomain;
     }
 
-    /**
-     * @return string
-     */
     protected function getAppPlatform(): string
     {
         return $this->appPlatform;
     }
 
-    /**
-     * @return string
-     */
     protected function getAppName(): string
     {
         return $this->appName;
     }
 
-    /**
-     * @return string
-     */
     protected function getAppTag(): string
     {
         return $this->appTag;
     }
 
-    /**
-     * AbstractCommonScript constructor.
-     */
-    protected function startTimer()
+    protected function startTimer(): void
     {
         $this->time = -microtime(true);
     }
 
-    /**
-     * @return void
-     */
-    protected function loadConfiguration(): void
-    {
-        $this->config = $this->getContainer()->getParameter('eureka.deployer.config');
-
-        if (!isset($this->config['install'])) {
-            throw new \RuntimeException('Invalid installer configuration file');
-        }
-    }
-
-    /**
-     * @param string $title
-     * @return void
-     */
     protected function displayHeader(string $title): void
     {
         $text = (string) (new Style($title))
             ->colorBackground(Color::BLUE)
-            ->colorForeground(Color::WHITE)
-            //->bold()
         ;
 
-        Out::std((string) $text, PHP_EOL);
+        Out::std($text);
     }
 
-    /**
-     * @param string $text
-     * @return void
-     */
     protected function displayInfo(string $text): void
     {
         Out::std(' ' . $text, '');
     }
 
-    /**
-     * @return void
-     */
     protected function displayInfoDone(): void
     {
         Out::std((string) (new Style(' done!'))->colorForeground(Color::GREEN)->highlightForeground());
     }
 
-    /**
-     * @return void
-     */
     protected function displayInfoFailed(): void
     {
         Out::std((string) (new Style(' failed!'))->colorForeground(Color::RED)->highlightForeground());
     }
 
-    /**
-     * @param string $step
-     * @param string $title
-     * @return void
-     */
     protected function displayStep(string $step, string $title): void
     {
-        $text = PHP_EOL . (string) (new Style(" $step "))
-            ->colorForeground(Color::WHITE)
+        $text = PHP_EOL . (new Style(" $step "))
             ->bold()
             ->colorBackground(Color::BLACK)
             ->highlightBackground()
         ;
 
-        $text .= (string) (new Style(" $title "))
+        $text .= (new Style(" $title "))
             ->colorBackground(Color::CYAN)
-            ->colorForeground(Color::WHITE)
             ->highlightForeground()
         ;
 
         Out::std($text, PHP_EOL . PHP_EOL);
     }
 
-    /**
-     * @param string $title
-     * @return void
-     */
     protected function displaySuccess(string $title): void
     {
         $status = (string) (new Style('[OK]'))
@@ -253,13 +193,9 @@ abstract class AbstractCommonScript extends AbstractScript
 
         $time = (string) $this->getTime();
 
-        Out::std(" ✓ ${status} ${text} in ${time}s", PHP_EOL . PHP_EOL);
+        Out::std(" ✓ $status $text in {$time}s", PHP_EOL . PHP_EOL);
     }
 
-    /**
-     * @param string $title
-     * @return void
-     */
     protected function displayError(string $title): void
     {
         $status = (string) (new Style('[ERROR]'))
@@ -273,13 +209,13 @@ abstract class AbstractCommonScript extends AbstractScript
 
         $time = (string) $this->getTime();
 
-        Out::std(" ✗ ${status} ${text} in ${time}s", PHP_EOL . PHP_EOL);
+        Out::std(" ✗ $status $text in {$time}s", PHP_EOL . PHP_EOL);
     }
 
     /**
      * @param string $message
      * @param int $code
-     * @return void
+     * @return never
      */
     protected function throw(string $message, int $code = 1): void
     {
@@ -293,9 +229,6 @@ abstract class AbstractCommonScript extends AbstractScript
         throw new \RuntimeException($message, $code);
     }
 
-    /**
-     * @return void
-     */
     protected function chdirSource(): void
     {
         $pathSource = $this->getRootDirSource();
@@ -305,10 +238,6 @@ abstract class AbstractCommonScript extends AbstractScript
         }
     }
 
-    /**
-     * @param bool $forceAppendTag
-     * @return string
-     */
     protected function getRootDirSource(bool $forceAppendTag = true): string
     {
         return $this->pathBuilder->buildPathSource(
@@ -320,9 +249,6 @@ abstract class AbstractCommonScript extends AbstractScript
         );
     }
 
-    /**
-     * @return float
-     */
     private function getTime(): float
     {
         return round($this->time + microtime(true), 1);

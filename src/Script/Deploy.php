@@ -27,7 +27,7 @@ class Deploy extends AbstractCommonScript
     public function __construct()
     {
         $this->setDescription('Eureka Deployer');
-        $this->setExecutable(true);
+        $this->setExecutable();
     }
 
     /**
@@ -57,7 +57,7 @@ class Deploy extends AbstractCommonScript
     {
         $rootDir = $this->rootDir;
 
-        passthru("${rootDir}/bin/console ${cmd} ${platformArg} ${tagArg} ${nameArg} ${domainArg}", $status);
+        passthru("$rootDir/bin/console $cmd $platformArg $tagArg $nameArg $domainArg", $status);
 
         if ($status !== 0) {
             throw new \RuntimeException('An error has occurred. Cannot deploy this application!');

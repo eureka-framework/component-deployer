@@ -28,7 +28,7 @@ class Install extends AbstractCommonScript
     public function __construct()
     {
         $this->setDescription('Eureka Installer');
-        $this->setExecutable(true);
+        $this->setExecutable();
     }
 
     /**
@@ -87,7 +87,10 @@ class Install extends AbstractCommonScript
         $nameArg     = '--app=' . escapeshellarg($this->getAppName());
         $domainArg   = '--domain=' . escapeshellarg($this->getAppDomain());
 
-        passthru("${pathSource}/bin/console ${scriptArg} ${stepArg} ${platformArg} ${tagArg} ${nameArg} ${domainArg}", $status);
+        passthru(
+            "$pathSource/bin/console $scriptArg $stepArg $platformArg $tagArg $nameArg $domainArg",
+            $status
+        );
 
         if ($status !== 0) {
             $this->displayError($script);

@@ -28,7 +28,7 @@ class EncoreBuild extends AbstractCommonScript
     public function __construct()
     {
         $this->setDescription('Yarn build dependencies with Encore');
-        $this->setExecutable(true);
+        $this->setExecutable();
     }
 
     /**

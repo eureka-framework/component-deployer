@@ -27,7 +27,7 @@ class Install extends AbstractCommonScript
     public function __construct()
     {
         $this->setDescription('Yarn install dependencies');
-        $this->setExecutable(true);
+        $this->setExecutable();
     }
 
     /**

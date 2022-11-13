@@ -27,7 +27,7 @@ class Cache extends AbstractCommonScript
     public function __construct()
     {
         $this->setDescription('Cleaning cache app directory');
-        $this->setExecutable(true);
+        $this->setExecutable();
     }
 
     /**
@@ -39,7 +39,7 @@ class Cache extends AbstractCommonScript
     }
 
     /**
-     * @param array $directories
+     * @param string[] $directories
      * @return void
      */
     protected function cleanDirectories(array $directories): void

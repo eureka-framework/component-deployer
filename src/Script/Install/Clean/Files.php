@@ -40,7 +40,7 @@ class Files extends AbstractCommonScript
     }
 
     /**
-     * @param array $files
+     * @param string[] $files
      * @return void
      */
     protected function cleanFiles(array $files): void
@@ -62,7 +62,7 @@ class Files extends AbstractCommonScript
     }
 
     /**
-     * @param array $directories
+     * @param string[] $directories
      * @return void
      */
     protected function cleanDirectories(array $directories): void

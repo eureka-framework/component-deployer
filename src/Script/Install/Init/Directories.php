@@ -27,7 +27,7 @@ class Directories extends AbstractCommonScript
     public function __construct()
     {
         $this->setDescription('Initializing / Fixing directories');
-        $this->setExecutable(true);
+        $this->setExecutable();
     }
 
     /**

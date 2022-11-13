@@ -27,7 +27,7 @@ class Link extends AbstractCommonScript
     public function __construct()
     {
         $this->setDescription('Eureka Link');
-        $this->setExecutable(true);
+        $this->setExecutable();
 
         $this->startTimer();
     }

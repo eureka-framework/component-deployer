@@ -27,7 +27,7 @@ class Export extends AbstractCommonScript
     public function __construct()
     {
         $this->setDescription('Eureka Exporter');
-        $this->setExecutable(true);
+        $this->setExecutable();
 
         $this->startTimer();
     }
@@ -65,7 +65,7 @@ class Export extends AbstractCommonScript
         $this->displayInfo('Creating git archive...');
         echo PHP_EOL;
 
-        passthru("git archive -o ${fileArg} --prefix=${prefixArg} ${tagArg}", $status);
+        passthru("git archive -o $fileArg --prefix=$prefixArg $tagArg", $status);
 
         if ($status !== 0) {
             $this->displayInfoFailed();
@@ -85,6 +85,10 @@ class Export extends AbstractCommonScript
         $fileArchiveArg = escapeshellarg($pathApplication . '.zip');
 
         $currentLocation = getcwd();
+        if ($currentLocation === false) {
+            $this->throw('Cannot get current directory location!');
+        }
+
         chdir($pathSource);
 
         $this->displayInfo(' Decompressing archive file...');
@@ -100,30 +104,11 @@ class Export extends AbstractCommonScript
         $this->displayInfoDone();
 
         $this->displayInfo(' Removing archive file...');
-        system("rm ${fileArchiveArg}", $status);
+        system("rm $fileArchiveArg", $status);
 
         if ($status !== 0) {
             $this->displayInfoFailed();
             $this->throw('Cannot remove file archive!');
-        }
-
-        $this->displayInfoDone();
-    }
-
-    /**
-     * @return void
-     */
-    private function preInstall(): void
-    {
-        $this->chdirSource();
-
-        $this->displayHeader(' Pre-install with composer...');
-
-        passthru("composer install --no-interaction", $status);
-
-        if ($status !== 0) {
-            $this->displayInfoFailed();
-            $this->throw('Error with composer installation');
         }
 
         $this->displayInfoDone();

@@ -27,7 +27,7 @@ class Symlink extends AbstractCommonScript
     public function __construct()
     {
         $this->setDescription('Initializing links (symlinks)');
-        $this->setExecutable(true);
+        $this->setExecutable();
     }
 
     /**
@@ -53,7 +53,7 @@ class Symlink extends AbstractCommonScript
 
             if (!symlink($source, $destination)) {
                 $this->displayInfoFailed();
-                $this->throw("Could not create symlink from ${source} to ${destination}");
+                $this->throw("Could not create symlink from $source to $destination");
             }
         }
 

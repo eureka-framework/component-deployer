@@ -1,0 +1,13 @@
+parameters:
+  phpVersion: 70400 # PHP 7.4 - Current minimal version supported
+  level: max
+  paths:
+    - ./src
+    - ./tests
+
+  bootstrapFiles:
+    - ./vendor/autoload.php
+
+  ignoreErrors:
+   - '`Property .+?AbstractCommonScript::\$config type has no value type specified in iterable type array\.`'
+   - '`Method .+?AbstractCommonScript::setConfig\(\) has parameter \$config with no value type specified in iterable type array\.`'
