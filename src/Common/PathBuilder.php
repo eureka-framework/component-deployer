@@ -94,34 +94,16 @@ class PathBuilder
      */
     private function getPrefix(string $platform): string
     {
-        switch ($platform) {
-            case Platform::LOCAL:
-                $prefix = 'local-';
-                break;
-            case Platform::DOCKER:
-                $prefix = 'docker-';
-                break;
-            case Platform::DEV:
-                $prefix = 'dev-';
-                break;
-            case Platform::TEST:
-                $prefix = 'test-';
-                break;
-            case Platform::STAGING:
-                $prefix = 'staging-';
-                break;
-            case Platform::PREPROD:
-                $prefix = 'preprod-';
-                break;
-            case Platform::DEMO:
-                $prefix = 'demo-';
-                break;
-            case Platform::PROD:
-            default:
-                $prefix = '';
-        }
-
-        return $prefix;
+        return match ($platform) {
+            Platform::LOCAL => 'local-',
+            Platform::DOCKER => 'docker-',
+            Platform::DEV => 'dev-',
+            Platform::TEST => 'test-',
+            Platform::STAGING => 'staging-',
+            Platform::PREPROD => 'preprod-',
+            Platform::DEMO => 'demo-',
+            default => '',
+        };
     }
 
     /**
@@ -140,21 +122,9 @@ class PathBuilder
             return $domain . '_v' . $tag;
         }
 
-        switch ($platform) {
-            case Platform::LOCAL:
-            case Platform::DOCKER:
-            case Platform::DEV:
-            case Platform::STAGING:
-                $suffix = $domain;
-                break;
-            case Platform::TEST:
-            case Platform::PREPROD:
-            case Platform::DEMO:
-            case Platform::PROD:
-            default:
-                $suffix = $domain . '_v' . $tag;
-        }
-
-        return $suffix;
+        return match ($platform) {
+            Platform::LOCAL, Platform::DOCKER, Platform::DEV, Platform::STAGING => $domain,
+            default => $domain . '_v' . $tag,
+        };
     }
 }

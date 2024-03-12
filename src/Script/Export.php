@@ -92,7 +92,7 @@ class Export extends AbstractCommonScript
         chdir($pathSource);
 
         $this->displayInfo(' Decompressing archive file...');
-        exec("unzip ${fileArchiveArg}", $output, $status);
+        exec("unzip $fileArchiveArg", $output, $status);
 
         if ($status !== 0) {
             chdir($currentLocation);

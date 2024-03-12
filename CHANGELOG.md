@@ -16,6 +16,23 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ```
 ----
 
+## [3.0.0] - 2024-03-12
+[3.0.0]: https://github.com/eureka-framework/component-deployer/compare/2.1.0...3.0.0
+### Changed
+- Now compatible with PHP 8.3
+- Update Makefile
+- Update composer.json
+- Update GitHub workflow
+- Some minor code change
+- Now use eureka console 6.0
+### Added
+- Add php-cs-fixer as linter
+### Removed
+- Drop PHP 7.4 & 8.0 support
+- Remove PHPCS dependency
+
+----
+
 ## [2.1.0] - 2022-11-13
 [2.1.0]: https://github.com/eureka-framework/component-deployer/compare/2.0.0...2.1.0
 ### Changed
