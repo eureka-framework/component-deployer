@@ -12,7 +12,13 @@ declare(strict_types=1);
 namespace Eureka\Component\Deployer\Common;
 
 use Eureka\Component\Console\Argument\Argument;
+use Eureka\Component\Console\Color\Bit4Color;
+use Eureka\Component\Console\Color\Bit8HighColor;
+use Eureka\Component\Console\Color\Bit8RGBColor;
+use Eureka\Component\Console\Color\Bit8StandardColor;
 use Eureka\Component\Console\Help;
+use Eureka\Component\Console\Option\Option;
+use Eureka\Component\Console\Option\Options;
 use Eureka\Component\Deployer\Enumerator\Platform;
 use Eureka\Component\Console\AbstractScript;
 use Eureka\Component\Console\IO\Out;
@@ -71,24 +77,64 @@ abstract class AbstractCommonScript extends AbstractScript
     {
         parent::before();
 
-        $arguments = Argument::getInstance();
-
-        //~ Add color & hide base header/footer script display
-        $arguments
-            ->add('script-no-header', true)
-            ->add('color', true)
-        ;
+        $this->initOptions(
+            (new Options())
+                ->add(
+                    new Option(
+                        shortName:   'p',
+                        longName:    'platform',
+                        description: 'Platform where installation is executed (default from config)',
+                        hasArgument: true,
+                        default:     Platform::PROD,
+                    )
+                )
+                ->add(
+                    new Option(
+                        shortName:   't',
+                        longName:    'tag',
+                        description: 'Tag version to install (default from config)',
+                        hasArgument: true,
+                        default:     $this->config['app.tag'] ?? '1.0.0',
+                    )
+                )
+                ->add(
+                    new Option(
+                        shortName:   'd',
+                        longName:    'domain',
+                        description: 'Application domain (ie: www.my-app.com) (default from config)',
+                        hasArgument: true,
+                        default:     $this->config['app.domain'] ?? '',
+                    )
+                )
+                ->add(
+                    new Option(
+                        shortName:   'n',
+                        longName:    'name',
+                        description: 'Application name, used to retrieve config (default from config)',
+                        hasArgument: true,
+                        default:     $this->config['app.domain'] ?? '',
+                    )
+                )
+                ->add(
+                    new Option(
+                        shortName:   's',
+                        longName:    'step',
+                        description: 'From which step the deployer should start (default is from beginning)',
+                        hasArgument: true,
+                    )
+                )
+        );
 
         //~ Init installer main vars
-        $this->appPlatform = (string) $arguments->get('platform', 'p', Platform::PROD);
-        $this->appTag      = (string) $arguments->get('tag', 't', $this->config['app.tag'] ?? '1.0.0');
-        $this->appName     = (string) $arguments->get('name', 'n', $this->config['app.name'] ?? '');
-        $this->appDomain   = (string) $arguments->get('domain', 'd', $this->config['app.domain'] ?? '');
+        $this->appPlatform = (string) $this->options()->value('platform', 'p');
+        $this->appTag      = (string) $this->options()->value('tag', 't');
+        $this->appName     = (string) $this->options()->value('name', 'n');
+        $this->appDomain   = (string) $this->options()->value('domain', 'd');
 
         //~ Display Step title
-        if ($arguments->has('step')) {
+        if ($this->options()->value('step') !== null) {
             $this->displayStep(
-                (string) $arguments->get('step'),
+                (string) $this->options()->value('step'),
                 $this->getDescription()
             );
         }
@@ -101,11 +147,7 @@ abstract class AbstractCommonScript extends AbstractScript
      */
     public function help(): void
     {
-        (new Help(static::class))
-            ->addArgument('p', 'platform', 'Platform where installation is executed (default from config)', true)
-            ->addArgument('t', 'tag', 'Tag version to install (default from config)', true)
-            ->addArgument('d', 'domain', 'Application domain (ie: www.my-app.com) (default from config)', true)
-            ->addArgument('n', 'name', 'Application name, used to retrieve config (default from config)', true)
+        (new Help(self::class, $this->declaredOptions(), $this->output(), $this->options()))
             ->display()
         ;
     }
@@ -142,74 +184,89 @@ abstract class AbstractCommonScript extends AbstractScript
 
     protected function displayHeader(string $title): void
     {
-        $text = (string) (new Style($title))
-            ->colorBackground(Color::BLUE)
+        $text = (new Style($this->options()))
+            ->background(Bit8StandardColor::Blue)
+            ->apply($title)
         ;
 
-        Out::std($text);
+        $this->output()->writeln($text);
     }
 
     protected function displayInfo(string $text): void
     {
-        Out::std(' ' . $text, '');
+        $this->output()->write(" $text");
     }
 
     protected function displayInfoDone(): void
     {
-        Out::std((string) (new Style(' done!'))->colorForeground(Color::GREEN)->highlightForeground());
+        $text = (new Style($this->options()))
+            ->color(Bit8HighColor::Green)
+            ->apply(' done!')
+        ;
+
+        $this->output()->writeln($text);
     }
 
     protected function displayInfoFailed(): void
     {
-        Out::std((string) (new Style(' failed!'))->colorForeground(Color::RED)->highlightForeground());
+        $text = (new Style($this->options()))
+            ->color(Bit8HighColor::Red)
+            ->apply(' failed!')
+        ;
+
+        $this->output()->writeln($text);
     }
 
     protected function displayStep(string $step, string $title): void
     {
-        $text = PHP_EOL . (new Style(" $step "))
-            ->bold()
-            ->colorBackground(Color::BLACK)
-            ->highlightBackground()
+        $text = PHP_EOL . (
+            (new Style($this->options()))
+                ->bold()
+                ->background(Bit8HighColor::Black)
+                ->apply(" $step ")
+        );
+
+        $text .= (new Style($this->options()))
+            ->background(Bit8HighColor::Cyan)
+            ->color(Bit8HighColor::White)
+            ->apply(" $title ")
         ;
 
-        $text .= (new Style(" $title "))
-            ->colorBackground(Color::CYAN)
-            ->highlightForeground()
-        ;
-
-        Out::std($text, PHP_EOL . PHP_EOL);
+        $this->output()->writeln($text . PHP_EOL);
     }
 
     protected function displaySuccess(string $title): void
     {
-        $status = (string) (new Style('[OK]'))
-            ->colorForeground(Color::GREEN)
-            ->highlightForeground()
+        $status = (new Style($this->options()))
+            ->color(Bit8HighColor::Green)
+            ->apply('[OK]')
         ;
 
-        $text = (string) (new Style($title))
-            ->colorForeground(Color::CYAN)
+        $text = (new Style($this->options()))
+            ->color(Bit8StandardColor::Cyan)
+            ->apply($title)
         ;
 
         $time = (string) $this->getTime();
 
-        Out::std(" ✓ $status $text in {$time}s", PHP_EOL . PHP_EOL);
+        $this->output()->writeln(" ✓ $status $text in {$time}s" . PHP_EOL);
     }
 
     protected function displayError(string $title): void
     {
-        $status = (string) (new Style('[ERROR]'))
-            ->colorForeground(Color::RED)
-            ->highlightForeground()
+        $status = (new Style($this->options()))
+            ->color(Bit8HighColor::Red)
+            ->apply('[ERROR]')
         ;
 
-        $text = (string) (new Style($title))
-            ->colorForeground(Color::CYAN)
+        $text = (new Style($this->options()))
+            ->color(Bit8StandardColor::Cyan)
+            ->apply($title)
         ;
 
         $time = (string) $this->getTime();
 
-        Out::std(" ✗ $status $text in {$time}s", PHP_EOL . PHP_EOL);
+        $this->output()->writeln(" ✗ $status $text in {$time}s" . PHP_EOL);
     }
 
     /**
@@ -219,12 +276,12 @@ abstract class AbstractCommonScript extends AbstractScript
      */
     protected function throw(string $message, int $code = 1): void
     {
-        $text = (string) (new Style('  > ' . $message))
-            ->colorForeground(Color::RED)
-            ->bold()
+        $text = (new Style($this->options()))
+            ->color(Bit8StandardColor::Red)
+            ->apply('  > ' . $message)
         ;
 
-        Out::std($text, PHP_EOL . PHP_EOL);
+        $this->output()->writeln($text . PHP_EOL);
 
         throw new \RuntimeException($message, $code);
     }

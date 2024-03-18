@@ -9,7 +9,7 @@
 
 declare(strict_types=1);
 
-namespace Eureka\Component\Deployer\Tests;
+namespace Eureka\Component\Deployer\Tests\Unit;
 
 use Eureka\Component\Deployer\Common\PathBuilder;
 use Eureka\Component\Deployer\Enumerator\Platform;

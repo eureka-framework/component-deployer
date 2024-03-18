@@ -12,7 +12,6 @@ declare(strict_types=1);
 namespace Eureka\Component\Deployer\Script;
 
 use Eureka\Component\Deployer\Common\AbstractCommonScript;
-use Eureka\Component\Console\IO\Out;
 
 /**
  * Class Install
@@ -106,10 +105,10 @@ class Install extends AbstractCommonScript
     {
         $this->displayStep('000', 'Starting install');
 
-        Out::std(' Platform:    ' . $this->getAppPlatform());
-        Out::std(' Application: ' . $this->getAppName());
-        Out::std(' Domain:      ' . $this->getAppDomain());
-        Out::std(' Tag:         ' . $this->getAppTag());
+        $this->output()->writeln(' Platform:    ' . $this->getAppPlatform());
+        $this->output()->writeln(' Application: ' . $this->getAppName());
+        $this->output()->writeln(' Domain:      ' . $this->getAppDomain());
+        $this->output()->writeln(' Tag:         ' . $this->getAppTag());
     }
 
     /**
