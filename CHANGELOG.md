@@ -16,6 +16,22 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ```
 ----
 
+## [4.0.0] - 2025-12-24
+[4.0.0]: https://github.com/eureka-framework/component-deployer/compare/3.0.0...4.0.0
+### Changed
+- Support PHP 8.3+ only
+- Use some promoted properties
+- Replace Platform class with const by Backed Enum
+- Update Makefile
+- Update GitHub workflow
+- Now use eureka console ^6.0||^7.0
+### Added
+- Add shipmonk dependency analyzer
+### Removed
+- Drop maglnet dependency analyzer
+
+----
+
 ## [3.0.0] - 2024-03-12
 [3.0.0]: https://github.com/eureka-framework/component-deployer/compare/2.1.0...3.0.0
 ### Changed

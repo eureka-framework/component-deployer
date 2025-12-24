@@ -11,18 +11,13 @@ declare(strict_types=1);
 
 namespace Eureka\Component\Deployer\Common;
 
-use Eureka\Component\Console\Argument\Argument;
-use Eureka\Component\Console\Color\Bit4Color;
 use Eureka\Component\Console\Color\Bit8HighColor;
-use Eureka\Component\Console\Color\Bit8RGBColor;
 use Eureka\Component\Console\Color\Bit8StandardColor;
 use Eureka\Component\Console\Help;
 use Eureka\Component\Console\Option\Option;
 use Eureka\Component\Console\Option\Options;
 use Eureka\Component\Deployer\Enumerator\Platform;
 use Eureka\Component\Console\AbstractScript;
-use Eureka\Component\Console\IO\Out;
-use Eureka\Component\Console\Style\Color;
 use Eureka\Component\Console\Style\Style;
 
 /**
@@ -30,15 +25,36 @@ use Eureka\Component\Console\Style\Style;
  *
  * @author Romain Cottard
  * @codeCoverageIgnore
+ * @phpstan-type ConfigData array{
+ *    "app.name": string,
+ *    "app.tag": string,
+ *    "app.domain": string,
+ *    install: array{
+ *        "step.start": int,
+ *        "step.end": int,
+ *        "step.list": array<int, string>,
+ *        init: array{
+ *            directories: array<string, int>,
+ *            symlinks: array<string, string>,
+ *        },
+ *        copy: array{
+ *            files: array<string, string>,
+ *        },
+ *        clean: array{
+ *            files: list<string>,
+ *            directories: list<string>,
+ *        },
+ *    },
+ * }
  */
 abstract class AbstractCommonScript extends AbstractScript
 {
-    /** @var array $config */
+    /** @var ConfigData $config */
     protected array $config;
 
     protected string $rootDir;
     protected float $time;
-    private string $appPlatform;
+    private Platform $appPlatform;
     private string $appTag;
     private string $appName;
     private string $appDomain;
@@ -52,7 +68,7 @@ abstract class AbstractCommonScript extends AbstractScript
     }
 
     /**
-     * @param array $config
+     * @param ConfigData $config
      * @return $this
      */
     public function setConfig(array $config): self
@@ -81,52 +97,52 @@ abstract class AbstractCommonScript extends AbstractScript
             (new Options())
                 ->add(
                     new Option(
-                        shortName:   'p',
-                        longName:    'platform',
+                        shortName: 'p',
+                        longName: 'platform',
                         description: 'Platform where installation is executed (default from config)',
                         hasArgument: true,
-                        default:     Platform::PROD,
-                    )
+                        default: Platform::Prod->value,
+                    ),
                 )
                 ->add(
                     new Option(
-                        shortName:   't',
-                        longName:    'tag',
+                        shortName: 't',
+                        longName: 'tag',
                         description: 'Tag version to install (default from config)',
                         hasArgument: true,
-                        default:     $this->config['app.tag'] ?? '1.0.0',
-                    )
+                        default: $this->config['app.tag'] ?? '1.0.0',
+                    ),
                 )
                 ->add(
                     new Option(
-                        shortName:   'd',
-                        longName:    'domain',
+                        shortName: 'd',
+                        longName: 'domain',
                         description: 'Application domain (ie: www.my-app.com) (default from config)',
                         hasArgument: true,
-                        default:     $this->config['app.domain'] ?? '',
-                    )
+                        default: $this->config['app.domain'] ?? '',
+                    ),
                 )
                 ->add(
                     new Option(
-                        shortName:   'n',
-                        longName:    'name',
+                        shortName: 'n',
+                        longName: 'name',
                         description: 'Application name, used to retrieve config (default from config)',
                         hasArgument: true,
-                        default:     $this->config['app.domain'] ?? '',
-                    )
+                        default: $this->config['app.domain'] ?? '',
+                    ),
                 )
                 ->add(
                     new Option(
-                        shortName:   's',
-                        longName:    'step',
+                        shortName: 's',
+                        longName: 'step',
                         description: 'From which step the deployer should start (default is from beginning)',
                         hasArgument: true,
-                    )
-                )
+                    ),
+                ),
         );
 
         //~ Init installer main vars
-        $this->appPlatform = (string) $this->options()->value('platform', 'p');
+        $this->appPlatform = Platform::from((string) $this->options()->value('platform', 'p'));
         $this->appTag      = (string) $this->options()->value('tag', 't');
         $this->appName     = (string) $this->options()->value('name', 'n');
         $this->appDomain   = (string) $this->options()->value('domain', 'd');
@@ -135,7 +151,7 @@ abstract class AbstractCommonScript extends AbstractScript
         if ($this->options()->value('step') !== null) {
             $this->displayStep(
                 (string) $this->options()->value('step'),
-                $this->getDescription()
+                $this->getDescription(),
             );
         }
     }
@@ -162,7 +178,7 @@ abstract class AbstractCommonScript extends AbstractScript
         return $this->appDomain;
     }
 
-    protected function getAppPlatform(): string
+    protected function getAppPlatform(): Platform
     {
         return $this->appPlatform;
     }
@@ -179,7 +195,7 @@ abstract class AbstractCommonScript extends AbstractScript
 
     protected function startTimer(): void
     {
-        $this->time = -microtime(true);
+        $this->time = -\microtime(true);
     }
 
     protected function displayHeader(string $title): void
@@ -290,7 +306,7 @@ abstract class AbstractCommonScript extends AbstractScript
     {
         $pathSource = $this->getRootDirSource();
 
-        if (!chdir($pathSource)) {
+        if (!\chdir($pathSource)) {
             $this->throw('Cannot change directory to "' . $pathSource . '"');
         }
     }
@@ -302,12 +318,12 @@ abstract class AbstractCommonScript extends AbstractScript
             $this->getAppName(),
             $this->getAppDomain(),
             $this->getAppTag(),
-            $forceAppendTag
+            $forceAppendTag,
         );
     }
 
     private function getTime(): float
     {
-        return round($this->time + microtime(true), 1);
+        return \round($this->time + \microtime(true), 1);
     }
 }

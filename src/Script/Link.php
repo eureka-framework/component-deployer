@@ -43,7 +43,7 @@ class Link extends AbstractCommonScript
             $pathSource = $this->getRootDirSource();
             $pathLink   = $this->getPathBuilder()->buildPathLink(
                 $this->getAppPlatform(),
-                $this->getAppDomain()
+                $this->getAppDomain(),
             );
             $this->cleanLink($pathLink);
             $this->linkToWebServer($pathSource, $pathLink);

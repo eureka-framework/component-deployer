@@ -14,30 +14,21 @@ namespace Eureka\Component\Deployer\Script\Install\Yarn;
 use Eureka\Component\Deployer\Common\AbstractCommonScript;
 
 /**
- * Class Install
- *
- * @author Romain Cottard
  * @codeCoverageIgnore
  */
 class Install extends AbstractCommonScript
 {
-    /**
-     * Install constructor.
-     */
     public function __construct()
     {
         $this->setDescription('Yarn install dependencies');
         $this->setExecutable();
     }
 
-    /**
-     * @return void
-     */
     public function run(): void
     {
         $this->chdirSource();
 
-        passthru('yarn install', $status);
+        \passthru('yarn install', $status);
 
         if ($status !== 0) {
             $this->throw('Error with yarn installation');

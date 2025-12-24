@@ -16,29 +16,14 @@ namespace Eureka\Component\Deployer\Enumerator;
  *
  * @author Romain Cottard
  */
-final class Platform
+enum Platform: string
 {
-    /** @var string LOCAL Usually user pc (but NOT IN docker) */
-    public const LOCAL   = 'local';
-
-    /** @var string DOCKER Usually user pc (but IN docker)  */
-    public const DOCKER  = 'docker';
-
-    /** @var string DEV Usually on "distant" dev server */
-    public const DEV     = 'dev';
-
-    /** @var string TEST Usually on "distant" testing server */
-    public const TEST    = 'test';
-
-    /** @var string STAGING Usually on distant staging server */
-    public const STAGING = 'staging';
-
-    /** @var string PREPROD Usually on distant pre-production server */
-    public const PREPROD = 'preprod';
-
-    /** @var string DEMO Usually on distant "demonstration" server */
-    public const DEMO    = 'demo';
-
-    /** @var string PROD Usually on distant production server */
-    public const PROD    = 'prod';
+    case Local   = 'local'; // Usually user pc (but NOT IN docker)
+    case Docker  = 'docker'; // Usually user pc (but IN docker)
+    case Dev     = 'dev'; // Usually on "distant" dev server
+    case Test    = 'test'; // Usually on "distant" testing server
+    case Staging = 'staging'; // Usually on distant staging server
+    case Preprod = 'preprod'; // Usually on distant pre-production server
+    case Demo    = 'demo'; // Usually on distant "demonstration" server
+    case Prod    = 'prod'; // Usually on distant production server
 }

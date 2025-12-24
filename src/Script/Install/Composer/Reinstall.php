@@ -15,25 +15,16 @@ use Eureka\Component\Deployer\Common\AbstractCommonScript;
 use Eureka\Component\Deployer\Enumerator\Platform;
 
 /**
- * Class Reinstall
- *
- * @author Romain Cottard
  * @codeCoverageIgnore
  */
 class Reinstall extends AbstractCommonScript
 {
-    /**
-     * ComposerClean constructor.
-     */
     public function __construct()
     {
         $this->setDescription('Composer clean reinstall (no dev)');
         $this->setExecutable();
     }
 
-    /**
-     * @return void
-     */
     public function run(): void
     {
         $this->chdirSource();
@@ -42,9 +33,6 @@ class Reinstall extends AbstractCommonScript
         $this->install();
     }
 
-    /**
-     * @return void
-     */
     private function clean(): void
     {
         $vendor = $this->getRootDirSource() . '/vendor';
@@ -55,7 +43,7 @@ class Reinstall extends AbstractCommonScript
 
         $this->displayInfo('Removing "vendor/" directory...');
 
-        passthru('rm -rf ' . $vendor, $status);
+        \passthru('rm -rf ' . $vendor, $status);
 
         if ($status !== 0) {
             $this->displayInfoFailed();
@@ -70,11 +58,11 @@ class Reinstall extends AbstractCommonScript
         $this->displayInfo('Installing composer without dev dependencies...');
 
         $args = ' --no-interaction --no-dev';
-        if ($this->getAppPlatform() === Platform::PROD) {
+        if ($this->getAppPlatform() === Platform::Prod) {
             $args .= ' --optimize-autoloader';
         }
 
-        passthru("composer install $args", $status);
+        \passthru("composer install $args", $status);
 
         if ($status !== 0) {
             $this->displayInfoFailed();
