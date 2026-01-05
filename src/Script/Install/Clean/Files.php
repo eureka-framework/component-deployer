@@ -14,25 +14,16 @@ namespace Eureka\Component\Deployer\Script\Install\Clean;
 use Eureka\Component\Deployer\Common\AbstractCommonScript;
 
 /**
- * Class Files
- *
- * @author Romain Cottard
  * @codeCoverageIgnore
  */
 class Files extends AbstractCommonScript
 {
-    /**
-     * Files constructor.
-     */
     public function __construct()
     {
         $this->setDescription('Cleaning files & directories');
         $this->setExecutable(true);
     }
 
-    /**
-     * @return void
-     */
     public function run(): void
     {
         $this->cleanFiles($this->config['install']['clean']['files']);
@@ -41,7 +32,6 @@ class Files extends AbstractCommonScript
 
     /**
      * @param string[] $files
-     * @return void
      */
     protected function cleanFiles(array $files): void
     {
@@ -54,7 +44,7 @@ class Files extends AbstractCommonScript
 
             $this->displayInfo('Removing ' . $file . '...');
 
-            if (is_file($file) && !unlink($file)) {
+            if (\is_file($file) && !\unlink($file)) {
                 $this->displayInfoFailed();
             }
             $this->displayInfoDone();
@@ -63,7 +53,6 @@ class Files extends AbstractCommonScript
 
     /**
      * @param string[] $directories
-     * @return void
      */
     protected function cleanDirectories(array $directories): void
     {
@@ -75,8 +64,8 @@ class Files extends AbstractCommonScript
 
             $this->displayInfo('Removing ' . $dir . '...');
 
-            if (is_dir($dir)) {
-                passthru('rm -rf ' . escapeshellarg($dir), $status);
+            if (\is_dir($dir)) {
+                passthru('rm -rf ' . \escapeshellarg($dir), $status);
             }
 
             if ($status !== 0) {

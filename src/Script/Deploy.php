@@ -35,10 +35,10 @@ class Deploy extends AbstractCommonScript
      */
     public function run(): void
     {
-        $platformArg = '--platform=' . escapeshellarg($this->getAppPlatform());
-        $tagArg      = '--tag=' . escapeshellarg($this->getAppTag());
-        $nameArg     = '--app=' . escapeshellarg($this->getAppName());
-        $domainArg   = '--domain=' . escapeshellarg($this->getAppDomain());
+        $platformArg = '--platform=' . \escapeshellarg($this->getAppPlatform()->value);
+        $tagArg      = '--tag=' . \escapeshellarg($this->getAppTag());
+        $nameArg     = '--app=' . \escapeshellarg($this->getAppName());
+        $domainArg   = '--domain=' . \escapeshellarg($this->getAppDomain());
 
         $this->exec('export', $platformArg, $tagArg, $nameArg, $domainArg);
         $this->exec('install', $platformArg, $tagArg, $nameArg, $domainArg);

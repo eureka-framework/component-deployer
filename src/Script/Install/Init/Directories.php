@@ -14,25 +14,16 @@ namespace Eureka\Component\Deployer\Script\Install\Init;
 use Eureka\Component\Deployer\Common\AbstractCommonScript;
 
 /**
- * Class Directories
- *
- * @author Romain Cottard
  * @codeCoverageIgnore
  */
 class Directories extends AbstractCommonScript
 {
-    /**
-     * Directories constructor.
-     */
     public function __construct()
     {
         $this->setDescription('Initializing / Fixing directories');
         $this->setExecutable();
     }
 
-    /**
-     * @return void
-     */
     public function run(): void
     {
         $this->chdirSource();
@@ -41,9 +32,6 @@ class Directories extends AbstractCommonScript
         $this->fixPermissions();
     }
 
-    /**
-     * @return void
-     */
     private function createDirectories(): void
     {
         $rootDir = $this->getRootDirSource();
@@ -61,9 +49,6 @@ class Directories extends AbstractCommonScript
         $this->displayInfoDone();
     }
 
-    /**
-     * @return void
-     */
     private function fixPermissions(): void
     {
         $rootDir = $this->getRootDirSource();

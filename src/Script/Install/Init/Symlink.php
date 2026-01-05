@@ -14,25 +14,16 @@ namespace Eureka\Component\Deployer\Script\Install\Init;
 use Eureka\Component\Deployer\Common\AbstractCommonScript;
 
 /**
- * Class Link
- *
- * @author Romain Cottard
  * @codeCoverageIgnore
  */
 class Symlink extends AbstractCommonScript
 {
-    /**
-     * Directories constructor.
-     */
     public function __construct()
     {
         $this->setDescription('Initializing links (symlinks)');
         $this->setExecutable();
     }
 
-    /**
-     * @return void
-     */
     public function run(): void
     {
         $this->chdirSource();
@@ -40,18 +31,15 @@ class Symlink extends AbstractCommonScript
         $this->createSymlinks();
     }
 
-    /**
-     * @return void
-     */
     private function createSymlinks(): void
     {
         $rootDir = $this->getRootDirSource();
 
         $this->displayInfo('Create symlinks');
         foreach ($this->config['install']['init']['symlinks'] as $source => $destination) {
-            $destination = str_replace('//', '/', $rootDir . DIRECTORY_SEPARATOR . $destination);
+            $destination = \str_replace('//', '/', $rootDir . DIRECTORY_SEPARATOR . $destination);
 
-            if (!symlink($source, $destination)) {
+            if (!\symlink($source, $destination)) {
                 $this->displayInfoFailed();
                 $this->throw("Could not create symlink from $source to $destination");
             }

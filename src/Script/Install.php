@@ -75,20 +75,20 @@ class Install extends AbstractCommonScript
     private function runStep(
         string $step,
         string $script,
-        string $pathSource
+        string $pathSource,
     ): void {
         $this->startTimer();
 
-        $scriptArg   = escapeshellarg($script);
-        $stepArg     = '--step=' . escapeshellarg($step);
-        $platformArg = '--platform=' . escapeshellarg($this->getAppPlatform());
-        $tagArg      = '--tag=' . escapeshellarg($this->getAppTag());
-        $nameArg     = '--app=' . escapeshellarg($this->getAppName());
-        $domainArg   = '--domain=' . escapeshellarg($this->getAppDomain());
+        $scriptArg   = \escapeshellarg($script);
+        $stepArg     = '--step=' . \escapeshellarg($step);
+        $platformArg = '--platform=' . \escapeshellarg($this->getAppPlatform()->value);
+        $tagArg      = '--tag=' . \escapeshellarg($this->getAppTag());
+        $nameArg     = '--app=' . \escapeshellarg($this->getAppName());
+        $domainArg   = '--domain=' . \escapeshellarg($this->getAppDomain());
 
         passthru(
             "$pathSource/bin/console $scriptArg $stepArg $platformArg $tagArg $nameArg $domainArg",
-            $status
+            $status,
         );
 
         if ($status !== 0) {
@@ -105,7 +105,7 @@ class Install extends AbstractCommonScript
     {
         $this->displayStep('000', 'Starting install');
 
-        $this->output()->writeln(' Platform:    ' . $this->getAppPlatform());
+        $this->output()->writeln(' Platform:    ' . $this->getAppPlatform()->value);
         $this->output()->writeln(' Application: ' . $this->getAppName());
         $this->output()->writeln(' Domain:      ' . $this->getAppDomain());
         $this->output()->writeln(' Tag:         ' . $this->getAppTag());

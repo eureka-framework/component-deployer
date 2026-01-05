@@ -3,7 +3,7 @@ includes:
   - ./vendor/phpstan/phpstan-phpunit/rules.neon
 
 parameters:
-  phpVersion: 80100
+  phpVersion: 80300
   level: max
   paths:
     - ./src
@@ -13,5 +13,7 @@ parameters:
     - ./vendor/autoload.php
 
   ignoreErrors:
-   - '`Property .+?AbstractCommonScript::\$config type has no value type specified in iterable type array\.`'
-   - '`Method .+?AbstractCommonScript::setConfig\(\) has parameter \$config with no value type specified in iterable type array\.`'
+    -
+      identifier: isset.initializedProperty
+      count:      1
+      path:       src/Common/AbstractCommonScript.php
